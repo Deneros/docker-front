@@ -1,0 +1,12 @@
+.rdt_Table{
+    display: flex;
+    justify-content: center;
+    background-color: black;
+    margin-top: 10vh;
+    position: relative;
+    width: 40%;
+    height: 20%;
+    border-radius: inherit;
+    overflow: auto hidden;
+    min-height: 0px;
+}
