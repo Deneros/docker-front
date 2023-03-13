@@ -69,22 +69,22 @@ function Table(props) {
       <StyledCointanerList>
         <StyledUl>
           <StyledLi>
-            <Styleda onChange={props.onStateChange('Bandeja')}>Bandeja</Styleda>
+            <Styleda onClick={()=> props.onStateChange('Bandeja')}>Bandeja</Styleda>
           </StyledLi>
           <StyledLi>
-            <Styleda onChange={props.onStateChange('Pendientes')}>Pendientes</Styleda>
+            <Styleda onClick={()=> props.onStateChange('Pendientes')}>Pendientes</Styleda>
           </StyledLi>
           <StyledLi>
-            <Styleda onChange={props.onStateChange('Firmados')}>Firmados</Styleda>
+            <Styleda onClick={()=> props.onStateChange('Firmados')}>Firmados</Styleda>
           </StyledLi>
           <StyledLi>
-            <Styleda onChange={props.onStateChange('Devueltos')}>Devueltos</Styleda>
+            <Styleda onClick={()=> props.onStateChange('Devueltos')}>Devueltos</Styleda>
           </StyledLi>
           <StyledLi>
-            <Styleda onChange={props.onStateChange('Carpetas')}>Carpetas</Styleda>
+            <Styleda onClick={()=> props.onStateChange('Carpetas')}>Carpetas</Styleda>
           </StyledLi>
           <StyledLi>
-            <Styleda onChange={props.onStateChange('Validar')}>Validar Documento</Styleda>
+            <Styleda onClick={()=> props.onStateChange('Validar')}>Validar Documento</Styleda>
           </StyledLi>
         </StyledUl>
       </StyledCointanerList>

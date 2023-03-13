@@ -52,13 +52,13 @@ function Document() {
     setData(data);
   };
 
-  const onStateChangeHandler = (event) => {
-    // setTab(event.target.value)
-    console.log(event.target.value);
+  const onStateChangeHandler = (data) => {
+    setTab(data)
+    console.log(tab);
   };
 
   useEffect(() => {
-    event("http://localhost:8080/api/usuario");
+    // event("http://localhost:8080/api/usuario");
   }, []);
 
   return (
