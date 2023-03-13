@@ -33,6 +33,13 @@ function Table(props) {
     display: "flex",
     alignItems: "center",
     height: "8vh",
+    ".active":{
+      position:"abolute",
+      cursor:"default",
+      backgroundColor:"white",
+      borderTopLeftRadius:"3px",
+      borderTopRightRadius:"3px"
+    }
   });
 
   const StyledLi = styled("li", {
@@ -49,8 +56,16 @@ function Table(props) {
       cursor: "pointer",
     },
     "&:last-child": {
+      cursor:"default",
       border: "none",
+      width:"100%",
+      backgroundColor: "#555555"
     },
+
+    ".active":{
+      cursor:"default",
+      backgroundColor:"white"
+    }
   });
 
   const Styleda = styled("a", {
@@ -68,23 +83,17 @@ function Table(props) {
     <StyledContainerTable>
       <StyledCointanerList>
         <StyledUl>
-          <StyledLi>
-            <Styleda onClick={()=> props.onStateChange('Bandeja')}>Bandeja</Styleda>
+          <StyledLi className="active">
+            <Styleda onClick={()=> props.onStateChange('usuario')}>Usuarios</Styleda>
           </StyledLi>
           <StyledLi>
-            <Styleda onClick={()=> props.onStateChange('Pendientes')}>Pendientes</Styleda>
+            <Styleda onClick={()=> props.onStateChange('documento')}>Documentos</Styleda>
           </StyledLi>
           <StyledLi>
-            <Styleda onClick={()=> props.onStateChange('Firmados')}>Firmados</Styleda>
+            <Styleda onClick={()=> props.onStateChange('consumo')}>Consumo</Styleda>
           </StyledLi>
           <StyledLi>
-            <Styleda onClick={()=> props.onStateChange('Devueltos')}>Devueltos</Styleda>
-          </StyledLi>
-          <StyledLi>
-            <Styleda onClick={()=> props.onStateChange('Carpetas')}>Carpetas</Styleda>
-          </StyledLi>
-          <StyledLi>
-            <Styleda onClick={()=> props.onStateChange('Validar')}>Validar Documento</Styleda>
+            <Styleda></Styleda>
           </StyledLi>
         </StyledUl>
       </StyledCointanerList>
