@@ -14,7 +14,7 @@ function Navbar() {
               fontFamily: "Poppins-ExtraLight",
             }}
           >
-            Nombre
+            Nicolas Velez
           </Text>
         </Dropdown.Button>
         <Dropdown.Menu aria-label="Static Actions">
