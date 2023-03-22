@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "@nextui-org/react";
 import DataTable from "react-data-table-component";
 import InputFilter from "../../components/Input/InputFilter";
+import DatePicker from "../../components/Input/DatePicker";
 // import "./Table.css";
 
 // const StyledTable = styled(DataTable, {
@@ -11,8 +12,13 @@ import InputFilter from "../../components/Input/InputFilter";
 //     marginTop:"6% !important",
 //   }
 // })
+const StyledTable = styled(DataTable, {
+  ".rdt_Table": {
 
-const StyledContainerDiv = styled("div", {
+  }
+});
+
+const StyledContainer = styled("div", {
   display: "flex",
   justifyContent: "center",
   padding: "0 !important",
@@ -22,7 +28,7 @@ const StyledContainerDiv = styled("div", {
   flexWrap: "wrap",
 });
 
-const StyledContainerTable = styled("div", {
+const StyledContainerGroupTable = styled("div", {
   // padding:"0 !important",
   display: "flex !important",
   position: "relative",
@@ -30,10 +36,16 @@ const StyledContainerTable = styled("div", {
   alignItems: "center",
   marginTop: "20px",
   width: "92vw",
-  height: "70vh",
+  height: "90vh",
   backgroundColor: "white",
   borderRadius: "5px",
   flexWrap: "wrap",
+});
+
+const StyledContainerTable = styled("div", {
+  position: "relative",
+  marginTop: "6%",
+  width: "95%",
 });
 
 const StyledCointanerList = styled("div", {
@@ -51,12 +63,14 @@ const StyledUl = styled("ul", {
   alignItems: "center",
   height: "8vh",
   ".active": {
-    position: "abolute",
     cursor: "default",
     backgroundColor: "white",
     borderTopLeftRadius: "3px",
     borderTopRightRadius: "3px",
   },
+  ".noActive":{
+    marginTop:"5px"
+  }
 });
 
 const StyledLi = styled("li", {
@@ -78,11 +92,6 @@ const StyledLi = styled("li", {
     width: "100%",
     backgroundColor: "#555555",
   },
-
-  ".active": {
-    cursor: "default",
-    backgroundColor: "white",
-  },
 });
 
 const Styleda = styled("a", {
@@ -93,68 +102,95 @@ const Styleda = styled("a", {
 });
 
 function Table(props) {
-
   const [filterText, setFilterText] = React.useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] =
-    React.useState(false);
+  const [startDate, setStartDate] = React.useState("");
+  const [finishDate, setFinishDate] = React.useState("");
+
+  const { tab } = props;
+
+  const filteredItems = filterText
+    ? props.data.filter((item) => {
+        return (
+          item.usu_nombre.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.usu_apelli.toLowerCase().includes(filterText.toLowerCase())
+        );
+      })
+    : props.data;
 
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
       if (filterText) {
-        setResetPaginationToggle(!resetPaginationToggle);
         setFilterText("");
       }
     };
 
-    return (
-      <InputFilter
-        onFilter={(e) => setFilterText(e.target.value)}
-        onClear={handleClear}
-        filterText={filterText}
-      />
-    );
-  }, [filterText, resetPaginationToggle]);
+    const handleFilterText = (data) => {
+      setFilterText(data);
+    };
 
-  const filteredItems = props.data;
+    console.log(props.tab);
+
+    if (props.tab == "documento") {
+      return (
+        <>
+          <DatePicker id="start" label="Fecha Inicio" />
+          <DatePicker id="finish" label="Fecha Final" />
+          <InputFilter
+            onFilter={(value) => handleFilterText(value)}
+            onClear={handleClear}
+            filterText={filterText}
+          />
+        </>
+      );
+    }else{
+      return (
+        <>
+          <InputFilter
+            onFilter={(value) => handleFilterText(value)}
+            onClear={handleClear}
+            filterText={filterText}
+          />
+        </>
+      );
+    }
+  }, [filterText, tab]);
 
   return (
-    <StyledContainerDiv>
-      <StyledContainerTable>
+    <StyledContainer>
+      <StyledContainerGroupTable>
         <StyledCointanerList>
           <StyledUl>
-            <StyledLi className="active">
-              <Styleda onClick={() => props.onStateChange("usuario")}>
-                Usuarios
-              </Styleda>
+            <StyledLi
+              className="active"
+              onClick={() => props.onStateChange("usuario")}
+            >
+              <Styleda>Usuarios</Styleda>
             </StyledLi>
-            <StyledLi>
-              <Styleda onClick={() => props.onStateChange("documento")}>
-                Documentos
-              </Styleda>
+            <StyledLi className="noActive" onClick={() => props.onStateChange("documento")}>
+              <Styleda>Documentos</Styleda>
             </StyledLi>
-            <StyledLi>
-              <Styleda onClick={() => props.onStateChange("consumo")}>
-                Consumo
-              </Styleda>
+            <StyledLi onClick={() => props.onStateChange("consumo")}>
+              <Styleda>Consumo</Styleda>
             </StyledLi>
             <StyledLi>
               <Styleda></Styleda>
             </StyledLi>
           </StyledUl>
         </StyledCointanerList>
-        <div style={{ marginTop: "6%", position:"relative" }}>
-        <DataTable
-          columns={props.columns}
-          data={filteredItems}
-          pagination
-          paginationResetDefaultPage={resetPaginationToggle}
-          expandableRows
-          subHeader
-          subHeaderComponent={subHeaderComponentMemo}
-        />
-        </div>
-      </StyledContainerTable>
-    </StyledContainerDiv>
+        <StyledContainerTable>
+          <DataTable
+            columns={props.columns}
+            data={filteredItems}
+            pagination
+            expandableRows
+            subHeader
+            subHeaderComponent={subHeaderComponentMemo}
+            subHeaderWrap={true}
+            dense
+          />
+        </StyledContainerTable>
+      </StyledContainerGroupTable>
+    </StyledContainer>
   );
 }
 

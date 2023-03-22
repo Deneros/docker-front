@@ -10,3 +10,7 @@
     overflow: auto hidden;
     min-height: 0px;
 }
+
+.rdt_TableHeader-content {
+    margin-top: 6% !important;
+  }
