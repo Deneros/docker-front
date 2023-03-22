@@ -12,12 +12,12 @@ const columns = {
   usuario: [
     {
       name: "Nombre",
-      selector: (row) => row.usu_nombre + row.usu_apelli,
+      selector: (row) => row.usu_nombre + " " + row.usu_apelli,
       sortable: true,
     },
     {
       name: "Documento",
-      selector: (row) => row.usu_tipo_documento + row.usu_docume,
+      selector: (row) => row.usu_tipo_documento + " " + row.usu_docume,
       sortable: true,
     },
     {
@@ -88,7 +88,6 @@ function Document() {
   const [data, setData] = useState([]);
   const [tab, setTab] = useState("usuario");
 
-
   const fetchDataFromUrl = async (url) => {
     const response = await fetch(url);
     const data = await response.json();
@@ -104,7 +103,6 @@ function Document() {
     fetchDataFromUrl(URL[tab]);
   }, [tab]);
 
-
   return (
     <>
       <Navbar />
@@ -112,6 +110,7 @@ function Document() {
         data={data}
         columns={columns[tab]}
         onStateChange={onStateChangeHandler}
+        tab={tab}
       />
     </>
   );
