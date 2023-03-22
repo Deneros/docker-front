@@ -1,12 +1,13 @@
-import { Input, Spacer } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 
- function InputFilter() {
+ function InputFilter(props) {
   return (
     <>
       <Input
         clearable
         bordered
-        labelPlaceholder="Busca"
+        labelPlaceholder="Buscar"
+        onChange={(e)=> props.onFilter(e.target.value)}
       />
     </>
   );
