@@ -1,54 +1,9 @@
 import React from "react";
-import { styled, Card, Text, Avatar, Grid } from "@nextui-org/react";
+import { styled, Avatar, Grid } from "@nextui-org/react";
 import DataTable from "react-data-table-component";
 import InputFilter from "../../components/Input/InputFilter";
 import DatePicker from "../../components/Input/DatePicker";
-// import "./Table.css";
-
-const AvatarGroup = () => {
-  const nameUsers = ["Junior", "Jane", "W", "John", "JR"];
-  const pictureUsers = [
-    "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    "https://i.pravatar.cc/150?u=a04258114e29026702d",
-    "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-    "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-  ];
-  return (
-    <Grid.Container gap={1}>
-      <Grid xs={12}>
-        <Avatar.Group count={12}>
-          {nameUsers.map((name, index) => (
-            <Avatar key={index} size="lg" pointer text={name} stacked />
-          ))}
-        </Avatar.Group>
-      </Grid>
-      <Grid xs={12}>
-        <Avatar.Group count={12}>
-          {pictureUsers.map((url, index) => (
-            <Avatar
-              key={index}
-              size="lg"
-              pointer
-              src={url}
-              bordered
-              color="gradient"
-              stacked
-            />
-          ))}
-        </Avatar.Group>
-      </Grid>
-    </Grid.Container>
-  );
-};
-
-const ExpandibleCard = (data) => {
-  return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <AvatarGroup />
-    </div>
-  );
-};
+import Select from "../../components/Select/Select";
 
 const StyledContainer = styled("div", {
   display: "flex",
@@ -133,21 +88,112 @@ const Styleda = styled("a", {
   fontSize: "16px",
 });
 
+const ExpandibleCard = (data) => {
+  const nameUsers = ["Junior", "Jane", "W", "John", "JR"];
+  const pictureUsers = [
+    "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    "https://i.pravatar.cc/150?u=a042581f4e29026704d",
+    "https://i.pravatar.cc/150?u=a04258114e29026702d",
+    "https://i.pravatar.cc/150?u=a048581f4e29026701d",
+    "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
+  ];
+  return (
+    <Grid.Container gap={1}>
+      <Grid xs={12}>
+        <Avatar.Group count={12}>
+          {nameUsers.map((name, index) => (
+            <Avatar key={index} size="lg" pointer text={name} stacked />
+          ))}
+        </Avatar.Group>
+      </Grid>
+      <Grid xs={12}>
+        <Avatar.Group count={12}>
+          {pictureUsers.map((url, index) => (
+            <Avatar
+              key={index}
+              size="lg"
+              pointer
+              src={url}
+              bordered
+              color="gradient"
+              stacked
+            />
+          ))}
+        </Avatar.Group>
+      </Grid>
+    </Grid.Container>
+  );
+};
+
+const filterByUser = (data, filterText) => {
+  return data.filter((item) => {
+    return (
+      item.usu_nombre.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.usu_apelli.toLowerCase().includes(filterText.toLowerCase())
+    );
+  });
+};
+
+const filterByDocument = (
+  data,
+  startDate,
+  finishDate,
+  filterText,
+  typeDate
+) => {
+  console.log(filterText);
+
+  return data.filter((item) => {
+    // if (startDate === null && finishDate === null) {
+    //   return true;
+    // }
+
+    let filterDate = item.doc_fechac;
+    if (typeDate[0] === "Fecha de firmado") {
+      filterDate = item.doc_fecha_f;
+    }
+
+    const dateFilter =
+      startDate && finishDate
+        ? filterDate >= startDate && filterDate <= finishDate
+        : true;
+    const textFilter =
+      item.doc_nombre && item.doc_estado
+        ? item.doc_nombre.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.doc_estado.toLowerCase().includes(filterText.toLowerCase())
+        : true;
+
+    return dateFilter && textFilter;
+  });
+};
+
+const filterByTabs = (
+  tab,
+  data,
+  filterText,
+  startDate,
+  finishDate,
+  typeDate
+) => {
+  if (tab === "usuario") {
+    return filterByUser(data, filterText);
+  }
+
+  if (tab === "documento") {
+    return filterByDocument(data, startDate, finishDate, filterText, typeDate);
+  }
+};
+
 function Table(props) {
   const [filterText, setFilterText] = React.useState("");
+  const [typeDate, setTypeDate] = React.useState(
+    new Set(["Seleccione una fecha"])
+  );
   const [startDate, setStartDate] = React.useState(null);
   const [finishDate, setFinishDate] = React.useState(null);
 
   const { tab } = props;
-
-  const filteredItems = filterText
-    ? props.data.filter((item) => {
-        return (
-          item.usu_nombre.toLowerCase().includes(filterText.toLowerCase()) ||
-          item.usu_apelli.toLowerCase().includes(filterText.toLowerCase())
-        );
-      })
-    : props.data;
+  const { data } = props;
 
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
@@ -165,24 +211,27 @@ function Table(props) {
     };
 
     const handleDatePickerFinish = (data) => {
+      if (startDate > data) {
+        alert("No se puede asignar una fecha final menor que la inicial");
 
-      if(startDate > data){
-        alert('No se puede asignar una fecha final mejor que la inicial');
-    
         return false;
       }
 
       setFinishDate(data);
     };
 
+    const handleDateType = (data) => {
+      setTypeDate(data);
+    };
+
     if (props.tab == "documento") {
       return (
         <>
+          <Select onSelect={handleDateType} />
           <DatePicker
             id="start"
             label="Fecha Inicio"
             onDate={handleDatePickerStart}
-            
           />
           <DatePicker
             id="finish"
@@ -237,7 +286,14 @@ function Table(props) {
         <StyledContainerTable>
           <DataTable
             columns={props.columns}
-            data={filteredItems}
+            data={filterByTabs(
+              tab,
+              data,
+              filterText,
+              startDate,
+              finishDate,
+              typeDate
+            )}
             pagination
             expandableRows
             expandableRowsComponent={ExpandibleCard}
