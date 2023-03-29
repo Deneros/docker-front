@@ -6,86 +6,53 @@ import DatePicker from "../../components/Input/DatePicker";
 import Select from "../../components/Select/Select";
 
 const StyledContainer = styled("div", {
-  display: "flex",
-  justifyContent: "center",
-  padding: "0 !important",
+  padding: "20px",
   width: "100%",
-  height: "100%",
+  height: "calc(100% - 60px)", 
   backgroundColor: "#555555",
-  flexWrap: "wrap",
 });
 
 const StyledContainerGroupTable = styled("div", {
-  // padding:"0 !important",
-  display: "flex !important",
-  position: "relative",
-  justifyContent: "center",
-  alignItems: "center",
-  marginTop: "20px",
-  width: "92vw",
-  height: "90vh",
-  backgroundColor: "white",
-  borderRadius: "5px",
-  flexWrap: "wrap",
+  width: "100%",
+  height: "100%",
 });
 
 const StyledContainerTable = styled("div", {
-  position: "relative",
-  marginTop: "6%",
-  width: "95%",
+  backgroundColor: "#FFF",
+  borderTopRightRadius: "3px",
+  borderBottomLeftRadius: "3px",
+  borderBottomRightRadius: "3px",
+  padding: "20px 10px 0px 10px",
+  overflowY: "auto",
+  height: "calc(100% - 44px)"
 });
 
 const StyledCointanerList = styled("div", {
-  position: "absolute",
-  top: "0",
-  width: "100%",
-  height: "8vh",
-  backgroundColor: "#DBDBDB",
+  backgroundColor: "#555555",
 });
 
 const StyledUl = styled("ul", {
-  padding: "0",
-  margin: "0",
   display: "flex",
-  alignItems: "center",
-  height: "8vh",
+  listStyle: "none",
   ".active": {
-    cursor: "default",
-    backgroundColor: "white",
+    backgroundColor: "#FFF",
     borderTopLeftRadius: "3px",
     borderTopRightRadius: "3px",
+    marginTop: "0"
   },
   ".noActive": {
-    // marginTop:"5px"
-  },
+    borderRight: "1px solid #A1A1A1"
+  }
 });
 
 const StyledLi = styled("li", {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  listStyle: "none",
-  borderRight: "solid 0.5px gray",
-  boxSizing: "border-box",
-  padding: "0px 50px",
-  height: "100%",
-  zIndex: "2",
-  "&:hover": {
-    cursor: "pointer",
-  },
-  "&:last-child": {
-    cursor: "default",
-    border: "none",
-    width: "100%",
-    backgroundColor: "#555555",
-  },
+  padding: "10px 20px",
+  marginTop: "3px",
+  backgroundColor: "#DBDBDB"
 });
 
 const Styleda = styled("a", {
-  display: "flex",
-  alignItems: "center",
-  textDecoration: "none",
-  fontSize: "16px",
+  cursor: "pointer"
 });
 
 const ExpandibleCard = (data) => {
@@ -194,6 +161,7 @@ function Table(props) {
 
   const { tab } = props;
   const { data } = props;
+  console.log(tab)
 
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
@@ -277,9 +245,6 @@ function Table(props) {
             </StyledLi>
             <StyledLi onClick={() => props.onStateChange("consumo")}>
               <Styleda>Consumo</Styleda>
-            </StyledLi>
-            <StyledLi>
-              <Styleda></Styleda>
             </StyledLi>
           </StyledUl>
         </StyledCointanerList>
