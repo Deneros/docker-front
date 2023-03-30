@@ -1,5 +1,5 @@
 import React from "react";
-import { styled, Avatar, Grid } from "@nextui-org/react";
+import { styled, Avatar, Grid, Container } from "@nextui-org/react";
 import DataTable from "react-data-table-component";
 import InputFilter from "../../components/Input/InputFilter";
 import DatePicker from "../../components/Input/DatePicker";
@@ -48,11 +48,11 @@ const StyledUl = styled("ul", {
 const StyledLi = styled("li", {
   padding: "10px 20px",
   marginTop: "3px",
+  cursor: "pointer",
   backgroundColor: "#DBDBDB"
 });
 
 const Styleda = styled("a", {
-  cursor: "pointer"
 });
 
 const ExpandibleCard = (data) => {
@@ -65,30 +65,35 @@ const ExpandibleCard = (data) => {
     "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
   ];
   return (
-    <Grid.Container gap={1}>
-      <Grid xs={12}>
-        <Avatar.Group count={12}>
-          {nameUsers.map((name, index) => (
-            <Avatar key={index} size="lg" pointer text={name} stacked />
-          ))}
-        </Avatar.Group>
-      </Grid>
-      <Grid xs={12}>
-        <Avatar.Group count={12}>
-          {pictureUsers.map((url, index) => (
-            <Avatar
-              key={index}
-              size="lg"
-              pointer
-              src={url}
-              bordered
-              color="gradient"
-              stacked
-            />
-          ))}
-        </Avatar.Group>
-      </Grid>
-    </Grid.Container>
+    <div style={{ display: "flex", gap: "30px", paddingLeft: "60px" }}>
+      <Container>
+        <p style={{ backgroundColor: "violet" }}>Aqui va el pdf</p>
+      </Container>
+      <Grid.Container gap={1}>
+        <Grid xs={12}>
+          <Avatar.Group count={12}>
+            {nameUsers.map((name, index) => (
+              <Avatar key={index} size="lg" pointer text={name} stacked />
+            ))}
+          </Avatar.Group>
+        </Grid>
+        <Grid xs={12}>
+          <Avatar.Group count={12}>
+            {pictureUsers.map((url, index) => (
+              <Avatar
+                key={index}
+                size="lg"
+                pointer
+                src={url}
+                bordered
+                color="gradient"
+                stacked
+              />
+            ))}
+          </Avatar.Group>
+        </Grid>
+      </Grid.Container>
+    </div>
   );
 };
 
@@ -161,8 +166,6 @@ function Table(props) {
 
   const { tab } = props;
   const { data } = props;
-  console.log(tab)
-
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -225,6 +228,9 @@ function Table(props) {
       );
     }
   }, [filterText, tab, startDate, finishDate]);
+  
+  const component = tab == "documento" ? ExpandibleCard : undefined;
+  const expandable = tab == "documento";
 
   return (
     <StyledContainer>
@@ -260,8 +266,8 @@ function Table(props) {
               typeDate
             )}
             pagination
-            expandableRows
-            expandableRowsComponent={ExpandibleCard}
+            expandableRows={expandable}
+            expandableRowsComponent={component}
             subHeader
             subHeaderComponent={subHeaderComponentMemo}
             subHeaderWrap={true}

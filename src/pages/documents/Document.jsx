@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../components/Table/Table";
 import Navbar from "../../components/layout/Navbar/Navbar";
+import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 
 const URL = {
   usuario: "http://localhost:8080/api/usuario",
@@ -34,6 +35,14 @@ const columns = {
       selector: (row) => row.rol_usuario,
       sortable: true,
     },
+    {
+      name: "Certificado",
+      cell: () => (
+        <h2 style={{ color: "#FF0000", cursor: "pointer" }} title="Descargar">
+          <BsFillFileEarmarkPdfFill />
+        </h2>
+      )
+    },
   ],
   documento: [
     {
@@ -54,6 +63,14 @@ const columns = {
     {
       name: "Fecha Firma",
       selector: (row) => row.doc_fecha_f + " " + row.doc_hora_f,
+    },
+    {
+      name: "Descargar",
+      cell: () => (
+        <h2 style={{ color: "#FF0000", cursor: "pointer" }} title="Descargar">
+          <BsFillFileEarmarkPdfFill />
+        </h2>
+      )
     },
   ],
   consulta: [
