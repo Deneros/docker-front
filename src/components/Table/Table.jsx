@@ -84,7 +84,7 @@ const ExpandibleCard = (data) => {
     "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
   ];
 
-  getDocument("http://localhost:8080/api/sended/document/" + documentData.doc_id);
+  getDocument("http://localhost:8080/api/sended/document/" + documentData.id_document);
   const document = "data:application/pdf;base64,"+base64Document;  
   
   return (

@@ -47,17 +47,17 @@ const columns = {
   documento: [
     {
       name: "Nombre",
-      selector: (row) => row.doc_nombre,
+      selector: (row) => row.document_name,
       sortable: true,
     },
     {
       name: "Estado",
-      selector: (row) => row.doc_estado,
+      selector: (row) => row.state,
       sortable: true,
     },
     {
       name: "Fecha creacion",
-      selector: (row) => row.doc_fechac + " " + row.doc_horac,
+      selector: (row) => row.send_date + " " + row.send_hour,
       sortable: true,
     },
     {
