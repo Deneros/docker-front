@@ -1,5 +1,5 @@
-import React from "react";
-import { styled, Avatar, Grid, Container } from "@nextui-org/react";
+import React, { useState } from "react";
+import { styled, Avatar, Grid } from "@nextui-org/react";
 import DataTable from "react-data-table-component";
 import InputFilter from "../../components/Input/InputFilter";
 import DatePicker from "../../components/Input/DatePicker";
@@ -55,8 +55,27 @@ const StyledLi = styled("li", {
 const Styleda = styled("a", {
 });
 
+const Styleobject = styled("object", {
+  height: "400px",
+  width: "700px"
+});
+
+let base64Document;
+
+const getDocument = (url) => {
+
+  fetch(url)
+    .then(response => {
+      if (!response.ok) throw new Error('No se pudo obtener los datos');
+      return response.json();
+    })
+    .then(data => base64Document = data.document)
+    .catch(error => console.log(error));
+}
+
 const ExpandibleCard = (data) => {
   const nameUsers = ["Junior", "Jane", "W", "John", "JR"];
+  const documentData = (JSON.parse(JSON.stringify(data))).data;
   const pictureUsers = [
     "https://i.pravatar.cc/150?u=a042581f4e29026024d",
     "https://i.pravatar.cc/150?u=a042581f4e29026704d",
@@ -64,12 +83,18 @@ const ExpandibleCard = (data) => {
     "https://i.pravatar.cc/150?u=a048581f4e29026701d",
     "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
   ];
+
+  getDocument("http://localhost:8080/api/sended/document/" + documentData.doc_id);
+  const document = "data:application/pdf;base64,"+base64Document;  
+  
   return (
     <div style={{ display: "flex", gap: "30px", paddingLeft: "60px" }}>
-      <Container>
-        <p style={{ backgroundColor: "violet" }}>Aqui va el pdf</p>
-      </Container>
-      <Grid.Container gap={1}>
+      <div>
+        <Styleobject data={document}>
+
+        </Styleobject>
+      </div>
+      <Grid.Container gap={1} css={{ margin: "auto", height: "fit-content" }}>
         <Grid xs={12}>
           <Avatar.Group count={12}>
             {nameUsers.map((name, index) => (
