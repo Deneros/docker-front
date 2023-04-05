@@ -138,7 +138,6 @@ const filterByDocument = (
   filterText,
   typeDate
 ) => {
-  console.log(filterText);
 
   return data.filter((item) => {
     // if (startDate === null && finishDate === null) {
@@ -183,9 +182,7 @@ const filterByTabs = (
 
 function Table(props) {
   const [filterText, setFilterText] = React.useState("");
-  const [typeDate, setTypeDate] = React.useState(
-    new Set(["Seleccione una fecha"])
-  );
+  const [typeDate, setTypeDate] = React.useState(new Set(["Seleccione una fecha"]));
   const [startDate, setStartDate] = React.useState(null);
   const [finishDate, setFinishDate] = React.useState(null);
 
@@ -253,9 +250,37 @@ function Table(props) {
       );
     }
   }, [filterText, tab, startDate, finishDate]);
-  
-  const component = tab == "documento" ? ExpandibleCard : undefined;
-  const expandable = tab == "documento";
+
+  let component, expandable;
+  const active = {
+    user: null,
+    document: null,
+    consumption: null
+  }
+
+  switch(tab) {
+    case "usuario":
+      component = undefined;
+      expandable = false;
+      active.user = "active";
+      active.document = "noActive";
+      active.consumption = null;
+      break;
+    case "documento":
+      component = ExpandibleCard;
+      expandable = true;
+      active.user = null;
+      active.document = "active";
+      active.consumption = null;
+      break;
+    default:
+      component = undefined;
+      expandable = false;
+      active.user = "noActive";
+      active.document = null;
+      active.consumption = "active";
+      break
+  }
 
   return (
     <StyledContainer>
@@ -263,24 +288,28 @@ function Table(props) {
         <StyledCointanerList>
           <StyledUl>
             <StyledLi
-              className="active"
+              className={active.user}
               onClick={() => props.onStateChange("usuario")}
             >
               <Styleda>Usuarios</Styleda>
             </StyledLi>
             <StyledLi
-              className="noActive"
+              className={active.document}
               onClick={() => props.onStateChange("documento")}
             >
               <Styleda>Documentos</Styleda>
             </StyledLi>
-            <StyledLi onClick={() => props.onStateChange("consumo")}>
+            <StyledLi
+              className={active.consumption}
+              onClick={() => props.onStateChange("consumo")}
+            >
               <Styleda>Consumo</Styleda>
             </StyledLi>
           </StyledUl>
         </StyledCointanerList>
         <StyledContainerTable>
           <DataTable
+            /* onRowExpandToggled={click} */
             columns={props.columns}
             data={filterByTabs(
               tab,
@@ -293,6 +322,7 @@ function Table(props) {
             pagination
             expandableRows={expandable}
             expandableRowsComponent={component}
+            /* expandableRowsComponentProps={archivo} */
             subHeader
             subHeaderComponent={subHeaderComponentMemo}
             subHeaderWrap={true}
