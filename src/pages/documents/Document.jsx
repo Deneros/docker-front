@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 import { styled } from "@nextui-org/react";
 import { useFetch } from "../../hooks/useFetch";
+import { useActiveTab } from "../../hooks/useActiveTab";
 import ExpandibleTable from "../../components/Expandable/ExpandableTable";
 
 const StyledContainer = styled("div", {
@@ -55,42 +56,42 @@ const StyledLi = styled("li", {
 
 /* const useActive = (element) => {}; */
 
-const activeTab = (tab) => {
+// const activeTab = (tab) => {
 
-  const active = {
-    user: null,
-    document: null,
-    consumption: null,
-    component: null,
-    expandable: null
-  };
+//   const active = {
+//     user: null,
+//     document: null,
+//     consumption: null,
+//     component: null,
+//     expandable: null
+//   };
 
-  switch (tab) {
-    case "usuario":
-      active.component = undefined;
-      active.expandable = false;
-      active.user = "active";
-      active.document = "noActive";
-      active.consumption = null;
-      break;
-    case "documento":
-      active.component = ExpandibleTable;
-      active.expandable = true;
-      active.user = null;
-      active.document = "active";
-      active.consumption = null;
-      break;
-    default:
-      active.component = undefined;
-      active.expandable = false;
-      active.user = "noActive";
-      active.document = null;
-      active.consumption = "active";
-      break;
-  }
+//   switch (tab) {
+//     case "usuario":
+//       active.component = undefined;
+//       active.expandable = false;
+//       active.user = "active";
+//       active.document = "noActive";
+//       active.consumption = null;
+//       break;
+//     case "documento":
+//       active.component = ExpandibleTable;
+//       active.expandable = true;
+//       active.user = null;
+//       active.document = "active";
+//       active.consumption = null;
+//       break;
+//     default:
+//       active.component = undefined;
+//       active.expandable = false;
+//       active.user = "noActive";
+//       active.document = null;
+//       active.consumption = "active";
+//       break;
+//   }
 
-  return active;
-};
+//   return active;
+// };
 
 const URL = {
   usuario: "http://localhost:8080/api/usuario",
@@ -191,14 +192,15 @@ const columns = {
 };
 
 function Document() {
-  // const [data, setData] = useState([]);
-  const [tab, setTab] = useState("usuario");
-  const { data, loading } = useFetch(URL[tab]);
-  const active = activeTab(tab);
+  // const [tab, setTab] = useState("usuario");
+  const {activeTab, getTabClassName, setActive} = useActiveTab("usuario");
+  const { data, loading } = useFetch(URL[activeTab]);
 
-  const onStateChangeHandler = (data) => {
-    setTab(data);
-  };
+  useEffect(() => {
+    console.log(activeTab)
+
+  }, [])
+  
 
   return (
     <>
@@ -208,20 +210,20 @@ function Document() {
           <StyledCointanerList>
             <StyledUl>
               <StyledLi
-                className={active.user}
-                onClick={() => onStateChangeHandler("usuario")}
+                className={getTabClassName("usuario")}
+                onClick={() => setActive("usuario")}
               >
                 <p>Usuarios</p>
               </StyledLi>
               <StyledLi
-                className={active.document}
-                onClick={() => onStateChangeHandler("documento")}
+                className={getTabClassName("documento")}
+                onClick={() => setActive("documento")}
               >
                 <p>Documentos</p>
               </StyledLi>
               <StyledLi
-                className={active.consumption}
-                onClick={() => onStateChangeHandler("consumo")}
+                className={getTabClassName("consumo")}
+                onClick={() => setActive("consumo")}
               >
                 <p>Consumo</p>
               </StyledLi>
@@ -230,11 +232,11 @@ function Document() {
           <StyledContainerTable>
             {!loading && (
               <DataTable
-                columns={columns[tab]}
+                columns={columns[activeTab]}
                 data={data}
                 pagination
-                expandableRows={active.expandable}
-                expandableRowsComponent={active.component}
+                expandableRows={activeTab==='documento'? true : false}
+                expandableRowsComponent={activeTab==='documento'? ExpandibleTable : null}
                 subHeader
                 subHeaderWrap={true}
                 dense
