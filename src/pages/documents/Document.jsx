@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Table from "../../components/Table/Table";
+import DataTable from "react-data-table-component";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 import { styled } from "@nextui-org/react";
@@ -53,34 +53,36 @@ const StyledLi = styled("li", {
   backgroundColor: "#DBDBDB",
 });
 
-const useActive = (element) => {};
+/* const useActive = (element) => {}; */
 
 const activeTab = (tab) => {
-  let component, expandable;
+
   const active = {
     user: null,
     document: null,
     consumption: null,
+    component: null,
+    expandable: null
   };
 
   switch (tab) {
     case "usuario":
-      component = undefined;
-      expandable = false;
+      active.component = undefined;
+      active.expandable = false;
       active.user = "active";
       active.document = "noActive";
       active.consumption = null;
       break;
     case "documento":
-      component = ExpandibleTable;
-      expandable = true;
+      active.component = ExpandibleTable;
+      active.expandable = true;
       active.user = null;
       active.document = "active";
       active.consumption = null;
       break;
     default:
-      component = undefined;
-      expandable = false;
+      active.component = undefined;
+      active.expandable = false;
       active.user = "noActive";
       active.document = null;
       active.consumption = "active";
@@ -203,35 +205,39 @@ function Document() {
       <Navbar />
       <StyledContainer>
         <StyledContainerGroupTable>
+          <StyledCointanerList>
+            <StyledUl>
+              <StyledLi
+                className={active.user}
+                onClick={() => onStateChangeHandler("usuario")}
+              >
+                <p>Usuarios</p>
+              </StyledLi>
+              <StyledLi
+                className={active.document}
+                onClick={() => onStateChangeHandler("documento")}
+              >
+                <p>Documentos</p>
+              </StyledLi>
+              <StyledLi
+                className={active.consumption}
+                onClick={() => onStateChangeHandler("consumo")}
+              >
+                <p>Consumo</p>
+              </StyledLi>
+            </StyledUl>
+          </StyledCointanerList>
           <StyledContainerTable>
-            <StyledCointanerList>
-              <StyledUl>
-                <StyledLi
-                  className={active.user}
-                  onClick={() => onStateChangeHandler("usuario")}
-                >
-                  <p>Usuarios</p>
-                </StyledLi>
-                <StyledLi
-                  className={active.document}
-                  onClick={() => onStateChangeHandler("documento")}
-                >
-                  <p>Documentos</p>
-                </StyledLi>
-                <StyledLi
-                  className={active.consumption}
-                  onClick={() => onStateChangeHandler("consumo")}
-                >
-                  <p>Consumo</p>
-                </StyledLi>
-              </StyledUl>
-            </StyledCointanerList>
             {!loading && (
-              <Table
-                data={data}
+              <DataTable
                 columns={columns[tab]}
-                onStateChange={onStateChangeHandler}
-                expandableComponent={active.component}
+                data={data}
+                pagination
+                expandableRows={active.expandable}
+                expandableRowsComponent={active.component}
+                subHeader
+                subHeaderWrap={true}
+                dense
               />
             )}
           </StyledContainerTable>

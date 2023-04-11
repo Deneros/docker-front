@@ -82,7 +82,7 @@ const filterByTabs = (
   }
 };
 
-function Table({columns, data, expandableComponent }) {
+function Table({columns, data, expandableComponent, expandableRows }) {
   const [filterText, setFilterText] = React.useState("");
   const [typeDate, setTypeDate] = React.useState(new Set(["Seleccione una fecha"]));
   const [startDate, setStartDate] = React.useState(null);
@@ -159,7 +159,7 @@ function Table({columns, data, expandableComponent }) {
             columns={columns}
             data={data}
             pagination
-            expandableRows={true}
+            expandableRows={expandableRows}
             expandableRowsComponent={expandableComponent}
             subHeader
             subHeaderWrap={true}
