@@ -11,5 +11,5 @@ export function useActiveTab(initialTab) {
       setActiveTab(tabKey);
     };
   
-    return {getTabClassName, setActive};
+    return {activeTab, getTabClassName, setActive};
 }
