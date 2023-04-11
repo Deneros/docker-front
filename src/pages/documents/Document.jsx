@@ -1,7 +1,94 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Table from "../../components/Table/Table";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
+import { styled } from "@nextui-org/react";
+import { useFetch } from "../../hooks/useFetch";
+import ExpandibleTable from "../../components/Expandable/ExpandableTable";
+
+const StyledContainer = styled("div", {
+  padding: "20px",
+  width: "100%",
+  height: "calc(100% - 60px)",
+  backgroundColor: "#555555",
+});
+
+const StyledContainerGroupTable = styled("div", {
+  width: "100%",
+  height: "100%",
+});
+
+const StyledContainerTable = styled("div", {
+  backgroundColor: "#FFF",
+  borderTopRightRadius: "3px",
+  borderBottomLeftRadius: "3px",
+  borderBottomRightRadius: "3px",
+  padding: "20px 10px 0px 10px",
+  overflowY: "auto",
+  height: "calc(100% - 44px)",
+});
+
+const StyledCointanerList = styled("div", {
+  backgroundColor: "#555555",
+});
+
+const StyledUl = styled("ul", {
+  display: "flex",
+  listStyle: "none",
+  ".active": {
+    backgroundColor: "#FFF",
+    borderTopLeftRadius: "3px",
+    borderTopRightRadius: "3px",
+    marginTop: "0",
+  },
+  ".noActive": {
+    borderRight: "1px solid #A1A1A1",
+  },
+});
+
+const StyledLi = styled("li", {
+  padding: "10px 20px",
+  marginTop: "3px",
+  cursor: "pointer",
+  backgroundColor: "#DBDBDB",
+});
+
+const useActive = (element) => {};
+
+const activeTab = (tab) => {
+  let component, expandable;
+  const active = {
+    user: null,
+    document: null,
+    consumption: null,
+  };
+
+  switch (tab) {
+    case "usuario":
+      component = undefined;
+      expandable = false;
+      active.user = "active";
+      active.document = "noActive";
+      active.consumption = null;
+      break;
+    case "documento":
+      component = ExpandibleTable;
+      expandable = true;
+      active.user = null;
+      active.document = "active";
+      active.consumption = null;
+      break;
+    default:
+      component = undefined;
+      expandable = false;
+      active.user = "noActive";
+      active.document = null;
+      active.consumption = "active";
+      break;
+  }
+
+  return active;
+};
 
 const URL = {
   usuario: "http://localhost:8080/api/usuario",
@@ -41,7 +128,7 @@ const columns = {
         <h2 style={{ color: "#FF0000", cursor: "pointer" }} title="Descargar">
           <BsFillFileEarmarkPdfFill />
         </h2>
-      )
+      ),
     },
   ],
   documento: [
@@ -70,7 +157,7 @@ const columns = {
         <h2 style={{ color: "#FF0000", cursor: "pointer" }} title="Descargar">
           <BsFillFileEarmarkPdfFill />
         </h2>
-      )
+      ),
     },
   ],
   consulta: [
@@ -102,33 +189,54 @@ const columns = {
 };
 
 function Document() {
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [tab, setTab] = useState("usuario");
-
-  const fetchDataFromUrl = async (url) => {
-    const response = await fetch(url);
-    const data = await response.json();
-
-    setData(data);
-  };
+  const { data, loading } = useFetch(URL[tab]);
+  const active = activeTab(tab);
 
   const onStateChangeHandler = (data) => {
     setTab(data);
   };
 
-  useEffect(() => {
-    fetchDataFromUrl(URL[tab]);
-  }, [tab]);
-
   return (
     <>
       <Navbar />
-      <Table
-        data={data}
-        columns={columns[tab]}
-        onStateChange={onStateChangeHandler}
-        tab={tab}
-      />
+      <StyledContainer>
+        <StyledContainerGroupTable>
+          <StyledContainerTable>
+            <StyledCointanerList>
+              <StyledUl>
+                <StyledLi
+                  className={active.user}
+                  onClick={() => onStateChangeHandler("usuario")}
+                >
+                  <p>Usuarios</p>
+                </StyledLi>
+                <StyledLi
+                  className={active.document}
+                  onClick={() => onStateChangeHandler("documento")}
+                >
+                  <p>Documentos</p>
+                </StyledLi>
+                <StyledLi
+                  className={active.consumption}
+                  onClick={() => onStateChangeHandler("consumo")}
+                >
+                  <p>Consumo</p>
+                </StyledLi>
+              </StyledUl>
+            </StyledCointanerList>
+            {!loading && (
+              <Table
+                data={data}
+                columns={columns[tab]}
+                onStateChange={onStateChangeHandler}
+                expandableComponent={active.component}
+              />
+            )}
+          </StyledContainerTable>
+        </StyledContainerGroupTable>
+      </StyledContainer>
     </>
   );
 }
