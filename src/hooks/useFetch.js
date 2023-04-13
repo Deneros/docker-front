@@ -13,11 +13,11 @@ export function useFetch(url) {
 
     fetch(url)
       .then((response) => response.json())
-      .then((data) => {setData(data); console.log(data)})
+      .then((data) => setData(data))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
 
-    return () => abortController.abort();
+    // return () => abortController.abort();
   }, [url]);
 
   // const handleCancelRequest = () => {
