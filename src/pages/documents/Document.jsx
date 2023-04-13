@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
-import DataTable from "react-data-table-component";
+import ExpandibleTable from "../../components/Expandable/ExpandableTable";
+import DocumentFilter from "../../components/Filter/DocumentFilter";
+import UserFilter from "../../components/Filter/UserFilter";
 import Navbar from "../../components/layout/Navbar/Navbar";
+import DataTable from "react-data-table-component";
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
+import { filterByTabs } from "../../services/filterService";
 import { styled } from "@nextui-org/react";
 import { useFetch } from "../../hooks/useFetch";
 import { useActiveTab } from "../../hooks/useActiveTab";
-import ExpandibleTable from "../../components/Expandable/ExpandableTable";
+import { useFilter } from "../../hooks/useFilter";
+import { useToggle } from "../../hooks/useHook";
 
 const StyledContainer = styled("div", {
   padding: "20px",
@@ -53,10 +58,6 @@ const StyledLi = styled("li", {
   cursor: "pointer",
   backgroundColor: "#DBDBDB",
 });
-
-/* const useActive = (element) => {}; */
-
-// const activeTab = (tab) => {
 
 //   const active = {
 //     user: null,
@@ -152,10 +153,10 @@ const columns = {
     },
     {
       name: "Fecha Firma",
-      selector: (row) => row.doc_fecha_f + " " + row.doc_hora_f,
+      selector: (row) => row.sign_date + " " + row.sign_hour,
     },
     {
-      name: "Descargar",
+      name: "Acciones",
       cell: () => (
         <h2 style={{ color: "#FF0000", cursor: "pointer" }} title="Descargar">
           <BsFillFileEarmarkPdfFill />
@@ -191,16 +192,69 @@ const columns = {
   ],
 };
 
+const VisualizeDocument = (expanded, row) => {
+  if (!expanded) return null;
+
+  return (
+    <ExpandibleTable id={row} />
+  )
+}
+
+
 function Document() {
-  // const [tab, setTab] = useState("usuario");
-  const {activeTab, getTabClassName, setActive} = useActiveTab("usuario");
+  const {
+    filterText,
+    setFilterText,
+    startDate,
+    setStartDate,
+    finishDate,
+    setFinishDate,
+    typeDate,
+    setTypeDate,
+  } = useFilter();
+  const { activeTab, getTabClassName, setActive } = useActiveTab("usuario");
   const { data, loading } = useFetch(URL[activeTab]);
+  // const [expandedDocument, setExpandedDocument] = React.useState(null);
 
-  useEffect(() => {
-    console.log(activeTab)
+  // const handleRowExpandToggled = (expanded, row) => {
+  //   if (expanded) {
+  //     setExpandedDocument(row);
+  //   } else {
+  //     setExpandedDocument(null);
+  //   }
+  // };
 
-  }, [])
+  // useEffect(() => {
+  //   console.log(filterText)
+  // }, [activeTab,filterText])
   
+
+
+  const subHeaderComponentMemo = React.useMemo(() => {
+    if (activeTab == "documento") {
+      return (
+        <>
+          <DocumentFilter
+            filterText={filterText}
+            setFilterText={setFilterText}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            finishDate={finishDate}
+            setFinishDate={setFinishDate}
+            typeDate={typeDate}
+            setTypeDate={setTypeDate}
+          />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <UserFilter filterText={filterText} setFilterText={setFilterText} />
+        </>
+      );
+    }
+  }, [activeTab, filterText, startDate, finishDate, typeDate]);
+
 
   return (
     <>
@@ -230,15 +284,26 @@ function Document() {
             </StyledUl>
           </StyledCointanerList>
           <StyledContainerTable>
-            {!loading && (
+            {!loading && data && (
               <DataTable
                 columns={columns[activeTab]}
-                data={data}
+                data={filterByTabs(
+                  activeTab,
+                  data,
+                  filterText,
+                  startDate,
+                  finishDate,
+                  typeDate
+                )}
                 pagination
-                expandableRows={activeTab==='documento'? true : false}
-                expandableRowsComponent={activeTab==='documento'? ExpandibleTable : null}
+                expandableRows={activeTab === "documento" ? true : false}
+                expandableRowsComponent={
+                  activeTab === "documento" ? ExpandibleTable : null
+                }
                 subHeader
                 subHeaderWrap={true}
+                subHeaderComponent={subHeaderComponentMemo}
+                onRowExpandToggled={(expanded, row)=>{VisualizeDocument(expanded,row)}}
                 dense
               />
             )}
