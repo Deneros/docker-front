@@ -1,57 +1,81 @@
-import { styled, Avatar, Grid } from "@nextui-org/react";
+import { styled, Avatar, Grid, Text, Tooltip } from "@nextui-org/react";
+import { useFetch } from "../../hooks/useFetch";
 
 const Styleobject = styled("object", {
   height: "400px",
-  width: "700px",
+  width: "300px",
 });
 
-function ExpandibleTable(data) {
-  const nameUsers = ["Junior", "Jane", "W", "John", "JR"];
-//   const documentData = JSON.parse(JSON.stringify(data)).data;
-  const pictureUsers = [
-    "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    "https://i.pravatar.cc/150?u=a04258114e29026702d",
-    "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-    "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-  ];
+function ExpandibleTable(id) {
+  let id_doc = id.data.id_document;
+  let sender = id.data.sender;
+  let destinataries = id.data.destinataries;
+  const { data, loading } = useFetch(
+    "http://localhost:8080/api/sended/document/" + id_doc
+  );
 
-//   getDocument(
-//     "http://localhost:8080/api/sended/document/" + documentData.id_document
-//   );
-//   const document = "data:application/pdf;base64," + base64Document;
 
   return (
-    <div style={{ display: "flex", gap: "30px", paddingLeft: "60px" }}>
-      <div>
-        {/* <Styleobject data={document}></Styleobject> */}
-      </div>
-      <Grid.Container gap={1} css={{ margin: "auto", height: "fit-content" }}>
-        <Grid xs={12}>
-          <Avatar.Group count={12}>
-            {nameUsers.map((name, index) => (
-              <Avatar key={index} size="lg" pointer text={name} stacked />
-            ))}
-          </Avatar.Group>
-        </Grid>
-        <Grid xs={12}>
-          <Avatar.Group count={12}>
-            {pictureUsers.map((url, index) => (
-              <Avatar
-                key={index}
-                size="lg"
-                pointer
-                src={url}
-                bordered
-                color="gradient"
-                stacked
-              />
-            ))}
-          </Avatar.Group>
-        </Grid>
-      </Grid.Container>
-    </div>
+    !loading && (
+      <>
+        <div style={{ display: "flex", gap: "30px", paddingLeft: "60px" }}>
+          <div>
+            <Styleobject
+              data={"data:application/pdf;base64," + data.document}
+            ></Styleobject>
+          </div>
+          <Grid.Container
+            gap={1}
+            css={{ margin: "auto", height: "fit-content" }}
+          >
+            <Text h3 b>
+              Remitente
+            </Text>
+            <Grid xs={12}>
+              <Avatar.Group>
+                {sender.map((user, index) => (
+                  <Tooltip content={user.name}>
+                    <Avatar
+                      key={index}
+                      size="lg"
+                      pointer
+                      text={user.name}
+                      bordered
+                      // src={user.picture}
+                      color="success"
+                      stacked
+                    />
+                  </Tooltip>
+                ))}
+              </Avatar.Group>
+            </Grid>
+            <Text h3 b>
+              Firmantes
+            </Text>
+            <Grid xs={12}>
+              <Avatar.Group>
+                {destinataries.map((user, index) => (
+                  <Tooltip content={user.name}>
+                    <Avatar
+                      key={index}
+                      size="lg"
+                      pointer
+                      text={user.name}
+                      bordered
+                      // src={user.picture}
+                      color={user.signed? "success":"error"}
+                      stacked
+                    />
+                  </Tooltip>
+                ))}
+              </Avatar.Group>
+            </Grid>
+            <Grid xs={12}></Grid>
+          </Grid.Container>
+        </div>
+      </>
+    )
   );
 }
 
-export default ExpandibleTable
+export default ExpandibleTable;
