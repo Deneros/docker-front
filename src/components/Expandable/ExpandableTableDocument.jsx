@@ -6,7 +6,7 @@ const Styleobject = styled("object", {
   width: "300px",
 });
 
-function ExpandibleTable(id) {
+function ExpandableTableDocument(id) {
   let id_doc = id.data.id_document;
   let sender = id.data.sender;
   let destinataries = id.data.destinataries;
@@ -78,4 +78,4 @@ function ExpandibleTable(id) {
   );
 }
 
-export default ExpandibleTable;
+export default ExpandableTableDocument;
