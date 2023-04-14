@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import ExpandibleTable from "../../components/Expandable/ExpandableTable";
+import React, { useEffect } from "react";
+import ExpandableTableDocument from "../../components/Expandable/ExpandableTableDocument";
+import ExpandableTableUser from "../../components/Expandable/ExpandableTableUser";
 import DocumentFilter from "../../components/Filter/DocumentFilter";
 import UserFilter from "../../components/Filter/UserFilter";
 import Navbar from "../../components/layout/Navbar/Navbar";
@@ -10,7 +11,6 @@ import { styled } from "@nextui-org/react";
 import { useFetch } from "../../hooks/useFetch";
 import { useActiveTab } from "../../hooks/useActiveTab";
 import { useFilter } from "../../hooks/useFilter";
-import { useToggle } from "../../hooks/useHook";
 
 const StyledContainer = styled("div", {
   padding: "20px",
@@ -95,9 +95,10 @@ const StyledLi = styled("li", {
 // };
 
 const URL = {
-  usuario: "http://localhost:8080/api/usuario",
-  documento: "http://localhost:8080/api/documento",
-  consumo: "http://localhost:8080/api/consumo",
+  usuario: "http://localhost:8080/api/user",
+  documento: "http://localhost:8080/api/document",
+  consumo: "http://localhost:8080/api/product",
+  transacciones: "http://localhost:8080/api/transactions",
 };
 
 const columns = {
@@ -123,7 +124,7 @@ const columns = {
     },
     {
       name: "Rol",
-      selector: (row) => row.rol_usuario,
+      selector: (row) => row.nombre_rol,
       sortable: true,
     },
     {
@@ -153,7 +154,10 @@ const columns = {
     },
     {
       name: "Fecha Firma",
-      selector: (row) => row.sign_date + " " + row.sign_hour,
+      selector: (row) =>
+        row.sign_date && row.sign_hour
+          ? row.sign_date + " " + row.sign_hour
+          : "- -",
     },
     {
       name: "Acciones",
@@ -164,29 +168,48 @@ const columns = {
       ),
     },
   ],
-  consulta: [
+  consumo: [
+    {
+      name: "Firmas compradas",
+      selector: (row) => row.bought_firms,
+      sortable: true,
+    },
+    {
+      name: "Firmas Usadas",
+      selector: (row) => row.used_firms,
+      sortable: true,
+    },
+  ],
+  transacciones: [
+    {
+      name: "Record",
+      selector: (row) => row.Record,
+      sortable: true,
+    },
+    {
+      name: "Fecha registro",
+      selector: (row) => row.StartingDate,
+      sortable: true,
+    },
+    {
+      name: "Cedula",
+      selector: (row) => row.IdNumber,
+      sortable: true,
+    },
     {
       name: "Nombre",
-      selector: (row) => row.usu_nombre + row.usu_apelli,
+      selector: (row) =>
+        row.FirstName + " " + row.FirstSurname + " " + row.SecondSurname,
       sortable: true,
     },
     {
-      name: "Documento",
-      selector: (row) => row.usu_tipo_documento + row.usu_docume,
+      name: "Lugar de Nacimiento",
+      selector: (row) => row.PlaceBirth,
       sortable: true,
     },
     {
-      name: "Correo",
-      selector: (row) => row.usu_email,
-      sortable: true,
-    },
-    {
-      name: "Celular",
-      selector: (row) => row.usu_celula,
-    },
-    {
-      name: "Rol",
-      selector: (row) => row.rol_usuario,
+      name: "Tipo transaccion",
+      selector: (row) => row.TransactionTypeName,
       sortable: true,
     },
   ],
@@ -195,11 +218,8 @@ const columns = {
 const VisualizeDocument = (expanded, row) => {
   if (!expanded) return null;
 
-  return (
-    <ExpandibleTable id={row} />
-  )
-}
-
+  return <ExpandableTableDocument id={row} />;
+};
 
 function Document() {
   const {
@@ -214,21 +234,14 @@ function Document() {
   } = useFilter();
   const { activeTab, getTabClassName, setActive } = useActiveTab("usuario");
   const { data, loading } = useFetch(URL[activeTab]);
-  // const [expandedDocument, setExpandedDocument] = React.useState(null);
 
-  // const handleRowExpandToggled = (expanded, row) => {
-  //   if (expanded) {
-  //     setExpandedDocument(row);
-  //   } else {
-  //     setExpandedDocument(null);
-  //   }
-  // };
+  useEffect(() => {
+    console.log("data", data);
+    console.log("columns", columns[activeTab]);
+    console.log("url", URL[activeTab]);
+  }, [activeTab]);
 
-  // useEffect(() => {
-  //   console.log(filterText)
-  // }, [activeTab,filterText])
-  
-
+  // return true;
 
   const subHeaderComponentMemo = React.useMemo(() => {
     if (activeTab == "documento") {
@@ -255,7 +268,6 @@ function Document() {
     }
   }, [activeTab, filterText, startDate, finishDate, typeDate]);
 
-
   return (
     <>
       <Navbar />
@@ -281,29 +293,48 @@ function Document() {
               >
                 <p>Consumo</p>
               </StyledLi>
+              <StyledLi
+                className={getTabClassName("transacciones")}
+                onClick={() => setActive("transacciones")}
+              >
+                <p>Transacciones</p>
+              </StyledLi>
             </StyledUl>
           </StyledCointanerList>
           <StyledContainerTable>
             {!loading && data && (
               <DataTable
                 columns={columns[activeTab]}
-                data={filterByTabs(
-                  activeTab,
-                  data,
-                  filterText,
-                  startDate,
-                  finishDate,
-                  typeDate
-                )}
+                data={
+                  filterByTabs(
+                    activeTab,
+                    data,
+                    filterText,
+                    startDate,
+                    finishDate,
+                    typeDate
+                  )
+                  // data
+                }
                 pagination
-                expandableRows={activeTab === "documento" ? true : false}
+                expandableRows={
+                  activeTab === "documento" || activeTab === "usuario"
+                    ? true
+                    : false
+                }
                 expandableRowsComponent={
-                  activeTab === "documento" ? ExpandibleTable : null
+                  activeTab === "documento"
+                    ? ExpandableTableDocument
+                    : activeTab === "usuario"
+                    ? ExpandableTableUser
+                    : null
                 }
                 subHeader
                 subHeaderWrap={true}
                 subHeaderComponent={subHeaderComponentMemo}
-                onRowExpandToggled={(expanded, row)=>{VisualizeDocument(expanded,row)}}
+                onRowExpandToggled={(expanded, row) => {
+                  VisualizeDocument(expanded, row);
+                }}
                 dense
               />
             )}
