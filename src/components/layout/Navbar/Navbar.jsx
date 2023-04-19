@@ -45,6 +45,9 @@ function Navbar() {
           <li>
             <a href="#">Template</a>
           </li>
+          <li>
+            <a href="#">Reports</a>
+          </li>
         </ul>
       </div>
       <div>
