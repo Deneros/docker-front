@@ -1,80 +1,104 @@
-import { styled, Avatar, Grid, Text, Tooltip } from "@nextui-org/react";
+import React from "react";
+import {
+  styled,
+  Avatar,
+  Grid,
+  Text,
+  Tooltip,
+  Loading,
+} from "@nextui-org/react";
 import { useFetch } from "../../hooks/useFetch";
 
 const Styleobject = styled("object", {
   height: "400px",
-  width: "300px",
+  width: "600px",
+  border: "none",
+  display: "block",
+  margin: "0 auto",
 });
 
-function ExpandableTableDocument(id) {
-  let id_doc = id.data.id_document;
-  let sender = id.data.sender;
-  let destinataries = id.data.destinataries;
-  const { data, loading } = useFetch(
-    "http://localhost:8080/api/sended/document/" + id_doc
+const DocumentContainer = styled("div", {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "400px",
+  width: "600px",
+});
+
+const InfoContainer = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "space-between",
+  height: "100%",
+});
+
+function ExpandableTableDocument({ data }) {
+  const id_doc = data.id_document;
+  const sender = data.sender;
+  const destinataries = data.destinataries;
+  const { data: documentData, loading } = useFetch(
+    `http://localhost:8080/api/sended/document/${id_doc}`
   );
 
-
   return (
-    !loading && (
-      <>
-        <div style={{ display: "flex", gap: "30px", paddingLeft: "60px" }}>
-          <div>
+    <>
+      <div
+        style={{
+          display: "flex",
+          gap: "30px",
+          paddingLeft: "60px",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <InfoContainer>
+          <Text h3 b style={{ fontFamily: "'Roboto', sans-serif" }}>
+            Remitente
+          </Text>
+          <Avatar.Group>
+            {sender.map((user, index) => (
+              <Tooltip content={user.name} key={index}>
+                <Avatar
+                  size="lg"
+                  pointer
+                  text={user.name}
+                  bordered
+                  color="success"
+                  stacked
+                />
+              </Tooltip>
+            ))}
+          </Avatar.Group>
+          <Text h3 b style={{ fontFamily: "'Roboto', sans-serif" }}>
+            Firmantes
+          </Text>
+          <Avatar.Group>
+            {destinataries.map((user, index) => (
+              <Tooltip content={user.name} key={index}>
+                <Avatar
+                  size="lg"
+                  pointer
+                  text={user.name}
+                  bordered
+                  color={user.signed ? "success" : "error"}
+                  stacked
+                />
+              </Tooltip>
+            ))}
+          </Avatar.Group>
+        </InfoContainer>
+        <DocumentContainer>
+          {loading ? (
+            <Loading size="xl" />
+          ) : (
             <Styleobject
-              data={"data:application/pdf;base64," + data.document}
+              data={"data:application/pdf;base64," + documentData.document+"#toolbar=0&navpanes=0&scrollbar=0"}
             ></Styleobject>
-          </div>
-          <Grid.Container
-            gap={1}
-            css={{ margin: "auto", height: "fit-content" }}
-          >
-            <Text h3 b>
-              Remitente
-            </Text>
-            <Grid xs={12}>
-              <Avatar.Group>
-                {sender.map((user, index) => (
-                  <Tooltip content={user.name}>
-                    <Avatar
-                      key={index}
-                      size="lg"
-                      pointer
-                      text={user.name}
-                      bordered
-                      // src={user.picture}
-                      color="success"
-                      stacked
-                    />
-                  </Tooltip>
-                ))}
-              </Avatar.Group>
-            </Grid>
-            <Text h3 b>
-              Firmantes
-            </Text>
-            <Grid xs={12}>
-              <Avatar.Group>
-                {destinataries.map((user, index) => (
-                  <Tooltip content={user.name}>
-                    <Avatar
-                      key={index}
-                      size="lg"
-                      pointer
-                      text={user.name}
-                      bordered
-                      // src={user.picture}
-                      color={user.signed? "success":"error"}
-                      stacked
-                    />
-                  </Tooltip>
-                ))}
-              </Avatar.Group>
-            </Grid>
-            <Grid xs={12}></Grid>
-          </Grid.Container>
-        </div>
-      </>
-    )
+          )}
+        </DocumentContainer>
+      </div>
+    </>
   );
 }
 

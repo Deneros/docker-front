@@ -1,55 +1,54 @@
-import { styled, Card, Text, Grid } from "@nextui-org/react";
-import { useFetch } from "../../hooks/useFetch";
+import { Card, Text, Avatar, Grid, Spacer } from '@nextui-org/react';
+import { styled } from '@nextui-org/react';
 
-const CardWrapper = styled("div", {
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "center",
-  gap: "1rem",
-  padding: "1rem",
+const StyledCard = styled(Card, {
+  minWidth: '200px',
+  maxWidth: '200px',
+  margin: '0 10px',
+  textAlign: 'center',
 });
 
 function ExpandableTableUser({ data }) {
-  // const userId = data.id_user;
-  // const { data: userData, loading } = useFetch(
-  //   "http://localhost:8080/api/user/" + userId
-  // );
-
-  // if (loading) {
-  //   return <Text>Loading...</Text>;
-  // }
-  const userData = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1 123 456 7890",
-    address: "123 Main St, City, Country",
-    otherInfo: "Additional information goes here",
-  };
-
   return (
-    <CardWrapper>
-      <Card>
-        <Card.Body>
-          <Grid.Container>
-            <Grid xs={12}>
-              <Text>Name: {userData.name}</Text>
-            </Grid>
-            <Grid xs={12}>
-              <Text>Email: {userData.email}</Text>
-            </Grid>
-            <Grid xs={12}>
-              <Text>Phone: {userData.phone}</Text>
-            </Grid>
-            <Grid xs={12}>
-              <Text>Address: {userData.address}</Text>
-            </Grid>
-            <Grid xs={12}>
-              <Text>Other info: {userData.otherInfo}</Text>
-            </Grid>
-          </Grid.Container>
-        </Card.Body>
-      </Card>
-    </CardWrapper>
+    <Grid.Container gap={2} justify="center" alignItems="center">
+      <Grid xs={12} sm={6} md={3}>
+        <StyledCard>
+          <Card.Body>
+            <Avatar size="lg" text="AB" />
+            <Spacer y={0.5} />
+            <Text h4>Name</Text>
+            <Text>Role</Text>
+          </Card.Body>
+          <Card.Footer>
+            <Text>Email</Text>
+          </Card.Footer>
+        </StyledCard>
+      </Grid>
+      <Grid xs={12} sm={6} md={3}>
+        <StyledCard>
+          <Card.Body>
+            <Text h4>Total Documents</Text>
+            <Text>123</Text>
+          </Card.Body>
+        </StyledCard>
+      </Grid>
+      <Grid xs={12} sm={6} md={3}>
+        <StyledCard>
+          <Card.Body>
+            <Text h4>Completed Documents</Text>
+            <Text>45</Text>
+          </Card.Body>
+        </StyledCard>
+      </Grid>
+      <Grid xs={12} sm={6} md={3}>
+        <StyledCard>
+          <Card.Body>
+            <Text h4>Pending Documents</Text>
+            <Text>78</Text>
+          </Card.Body>
+        </StyledCard>
+      </Grid>
+    </Grid.Container>
   );
 }
 
