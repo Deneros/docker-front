@@ -7,7 +7,7 @@ export function useFetch(url) {
   // const [controller, setController] = useState(null);
 
   useEffect(() => {
-    const abortController = new AbortController();
+    // const abortController = new AbortController();
 
     setLoading(true);
 
