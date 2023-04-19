@@ -5,6 +5,7 @@ import DocumentFilter from "../../components/Filter/DocumentFilter";
 import UserFilter from "../../components/Filter/UserFilter";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import DataTable from "react-data-table-component";
+import Dashboard from "../../components/Dashboard/Dashboard";
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 import { filterByTabs } from "../../services/filterService";
 import { styled } from "@nextui-org/react";
@@ -124,7 +125,8 @@ const columns = {
     },
     {
       name: "Rol",
-      selector: (row) => row.nombre_rol,
+      selector: (row) =>
+        row.nombre_rol === "Funcionario Emcali" ? "Usuario" : row.nombre_rol,
       sortable: true,
     },
     {
@@ -235,13 +237,14 @@ function Document() {
   const { activeTab, getTabClassName, setActive } = useActiveTab("usuario");
   const { data, loading } = useFetch(URL[activeTab]);
 
-  useEffect(() => {
-    console.log("data", data);
-    console.log("columns", columns[activeTab]);
-    console.log("url", URL[activeTab]);
-  }, [activeTab]);
+  // useEffect(() => {
+  //   console.log("tab", activeTab);
+  //   console.log("data", data);
+  //   if (activeTab === "consumo") {
+  //     console.log("consumo", data.top_senders);
+  //   }
+  // }, [activeTab, data]);
 
-  // return true;
 
   const subHeaderComponentMemo = React.useMemo(() => {
     if (activeTab == "documento") {
@@ -288,55 +291,65 @@ function Document() {
                 <p>Documentos</p>
               </StyledLi>
               <StyledLi
-                className={getTabClassName("consumo")}
-                onClick={() => setActive("consumo")}
-              >
-                <p>Consumo</p>
-              </StyledLi>
-              <StyledLi
                 className={getTabClassName("transacciones")}
                 onClick={() => setActive("transacciones")}
               >
                 <p>Transacciones</p>
               </StyledLi>
+              <StyledLi
+                className={getTabClassName("consumo")}
+                onClick={() => setActive("consumo")}
+              >
+                <p>Consumo</p>
+              </StyledLi>
             </StyledUl>
           </StyledCointanerList>
           <StyledContainerTable>
             {!loading && data && (
-              <DataTable
-                columns={columns[activeTab]}
-                data={
-                  filterByTabs(
-                    activeTab,
-                    data,
-                    filterText,
-                    startDate,
-                    finishDate,
-                    typeDate
-                  )
-                  // data
-                }
-                pagination
-                expandableRows={
-                  activeTab === "documento" || activeTab === "usuario"
-                    ? true
-                    : false
-                }
-                expandableRowsComponent={
-                  activeTab === "documento"
-                    ? ExpandableTableDocument
-                    : activeTab === "usuario"
-                    ? ExpandableTableUser
-                    : null
-                }
-                subHeader
-                subHeaderWrap={true}
-                subHeaderComponent={subHeaderComponentMemo}
-                onRowExpandToggled={(expanded, row) => {
-                  VisualizeDocument(expanded, row);
-                }}
-                dense
-              />
+              <>
+                {activeTab === "consumo" ? (
+                  // <p>hola</p>
+                  <Dashboard
+                    boughtFirms={data.bought_firms}
+                    usedFirms={data.used_firms}
+                    topSenders={data.top_senders}
+                  />
+                ) : (
+                  <DataTable
+                    columns={columns[activeTab]}
+                    data={
+                      filterByTabs(
+                        activeTab,
+                        data,
+                        filterText,
+                        startDate,
+                        finishDate,
+                        typeDate
+                      )
+                    }
+                    pagination
+                    expandableRows={
+                      activeTab === "documento" || activeTab === "usuario"
+                        ? true
+                        : false
+                    }
+                    expandableRowsComponent={
+                      activeTab === "documento"
+                        ? ExpandableTableDocument
+                        : activeTab === "usuario"
+                        ? ExpandableTableUser
+                        : null
+                    }
+                    subHeader
+                    subHeaderWrap={true}
+                    subHeaderComponent={subHeaderComponentMemo}
+                    onRowExpandToggled={(expanded, row) => {
+                      VisualizeDocument(expanded, row);
+                    }}
+                    dense
+                  />
+                )}
+              </>
             )}
           </StyledContainerTable>
         </StyledContainerGroupTable>
