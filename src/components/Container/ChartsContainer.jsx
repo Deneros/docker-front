@@ -1,6 +1,6 @@
 import React from "react";
 import PieChart from "../Charts/PieChart";
-import LineChart from "../Charts/lineChart";
+import CustomLineChart from "../Charts/LineChart";
 import { styled, Card } from "@nextui-org/react";
 
 const StyledCard = styled(Card, {
@@ -9,7 +9,7 @@ const StyledCard = styled(Card, {
   margin: "0.5rem",
 });
 
-function ChartsContainer({ topSenders }) {
+function ChartsContainer({ topSenders, monthlyCounts, topSignedSenders }) {
   return (
     <div
       style={{
@@ -22,18 +22,18 @@ function ChartsContainer({ topSenders }) {
       <div style={{ display: "flex", justifyContent: "space-around" }}>
         <StyledCard>
           <Card.Body>
-            <PieChart topSenders={topSenders} />
+            <PieChart data={topSenders} title={'Documentos enviadas'} titleSlice={'info:'}/>
           </Card.Body>
         </StyledCard>
         <StyledCard>
           <Card.Body>
-            <PieChart topSenders={topSenders} />
+            <PieChart data={topSignedSenders} title={'Documentos firmados'} titleSlice={'info:'}/>
           </Card.Body>
         </StyledCard>
       </div>
       <StyledCard>
         <Card.Body>
-          <LineChart />
+          <CustomLineChart monthlyCounts={monthlyCounts} />
         </Card.Body>
       </StyledCard>
     </div>

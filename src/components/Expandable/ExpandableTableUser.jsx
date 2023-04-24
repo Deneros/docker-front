@@ -1,52 +1,52 @@
-import { Card, Text, Avatar, Grid, Spacer } from '@nextui-org/react';
-import { styled } from '@nextui-org/react';
+import { useEffect } from "react";
+import { Card, Text, Avatar, Grid, Spacer } from "@nextui-org/react";
+import { styled, Loading } from "@nextui-org/react";
+import { useFetch } from "../../hooks/useFetch";
+import { URL } from "../../utils/constants";
+import GeneralCard from "../Cards/GeneralCard";
 
 const StyledCard = styled(Card, {
-  minWidth: '200px',
-  maxWidth: '200px',
-  margin: '0 10px',
-  textAlign: 'center',
+  minWidth: "200px",
+  maxWidth: "200px",
+  margin: "0 10px",
+  textAlign: "center",
 });
 
 function ExpandableTableUser({ data }) {
+  const { data: userData, loading } = useFetch(
+    `${URL}user/${data.usu_id}/documents`
+  );
+
+  useEffect(() => {
+    console.log(userData);
+    console.log(data.usu_id);
+  }, []);
+
   return (
     <Grid.Container gap={2} justify="center" alignItems="center">
       <Grid xs={12} sm={6} md={3}>
-        <StyledCard>
-          <Card.Body>
-            <Avatar size="lg" text="AB" />
-            <Spacer y={0.5} />
-            <Text h4>Name</Text>
-            <Text>Role</Text>
-          </Card.Body>
-          <Card.Footer>
-            <Text>Email</Text>
-          </Card.Footer>
-        </StyledCard>
+        <GeneralCard
+          title="Name"
+          value={`${data.usu_nombre} ${data.usu_apelli}`}
+        />
       </Grid>
       <Grid xs={12} sm={6} md={3}>
-        <StyledCard>
-          <Card.Body>
-            <Text h4>Total Documents</Text>
-            <Text>123</Text>
-          </Card.Body>
-        </StyledCard>
+        <GeneralCard
+          title="Total Documents"
+          value={loading ? <Loading /> : userData.total_documents}
+        />
       </Grid>
       <Grid xs={12} sm={6} md={3}>
-        <StyledCard>
-          <Card.Body>
-            <Text h4>Completed Documents</Text>
-            <Text>45</Text>
-          </Card.Body>
-        </StyledCard>
+        <GeneralCard
+          title="Completed Documents"
+          value={loading ? <Loading /> : userData.completed_documents}
+        />
       </Grid>
       <Grid xs={12} sm={6} md={3}>
-        <StyledCard>
-          <Card.Body>
-            <Text h4>Pending Documents</Text>
-            <Text>78</Text>
-          </Card.Body>
-        </StyledCard>
+        <GeneralCard
+          title="Pending Documents"
+          value={loading ? <Loading /> : userData.pending_documents}
+        />
       </Grid>
     </Grid.Container>
   );

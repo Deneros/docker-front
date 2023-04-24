@@ -2,19 +2,19 @@ import React from "react";
 import ReactECharts from "echarts-for-react";
 import "echarts/lib/chart/pie";
 
-function PieChart({ topSenders }) {
-  if (!topSenders || topSenders.length === 0) {
+function PieChart({ data, title, titleSlice }) {
+  if (!data || data.length === 0) {
     return null;
   }
 
-  const chartData = topSenders.map((item) => ({
+  const chartData = data.map((item) => ({
     name: item.sender.name,
     value: item.send_count,
   }));
 
   const option = {
     title: {
-      text: "Personas que más envían correos",
+      text: title,
       left: "center",
     },
     tooltip: {
@@ -28,9 +28,9 @@ function PieChart({ topSenders }) {
     },
     series: [
       {
-        name: "Top Senders",
+        name: titleSlice,
         type: "pie",
-        radius: "50%",
+
         data: chartData,
         itemStyle: {
           emphasis: {
