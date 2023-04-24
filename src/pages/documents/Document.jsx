@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ExpandableTableDocument from "../../components/Expandable/ExpandableTableDocument";
 import ExpandableTableUser from "../../components/Expandable/ExpandableTableUser";
 import DocumentFilter from "../../components/Filter/DocumentFilter";
@@ -223,6 +223,14 @@ const VisualizeDocument = (expanded, row) => {
   return <ExpandableTableDocument id={row} />;
 };
 
+const VisualizeUser = (expanded, row) => {
+  if (!expanded) return null;
+};
+
+const handleExpandableComponent = () => {};
+
+const handleExpandableBool = () => {};
+
 function Document() {
   const {
     filterText,
@@ -236,15 +244,6 @@ function Document() {
   } = useFilter();
   const { activeTab, getTabClassName, setActive } = useActiveTab("usuario");
   const { data, loading } = useFetch(URL[activeTab]);
-
-  // useEffect(() => {
-  //   console.log("tab", activeTab);
-  //   console.log("data", data);
-  //   if (activeTab === "consumo") {
-  //     console.log("consumo", data.top_senders);
-  //   }
-  // }, [activeTab, data]);
-
 
   const subHeaderComponentMemo = React.useMemo(() => {
     if (activeTab == "documento") {
@@ -312,21 +311,18 @@ function Document() {
                   <Dashboard
                     boughtFirms={data.bought_firms}
                     usedFirms={data.used_firms}
-                    topSenders={data.top_senders}
                   />
                 ) : (
                   <DataTable
                     columns={columns[activeTab]}
-                    data={
-                      filterByTabs(
-                        activeTab,
-                        data,
-                        filterText,
-                        startDate,
-                        finishDate,
-                        typeDate
-                      )
-                    }
+                    data={filterByTabs(
+                      activeTab,
+                      data,
+                      filterText,
+                      startDate,
+                      finishDate,
+                      typeDate
+                    )}
                     pagination
                     expandableRows={
                       activeTab === "documento" || activeTab === "usuario"
@@ -343,9 +339,9 @@ function Document() {
                     subHeader
                     subHeaderWrap={true}
                     subHeaderComponent={subHeaderComponentMemo}
-                    onRowExpandToggled={(expanded, row) => {
-                      VisualizeDocument(expanded, row);
-                    }}
+                    // onRowExpandToggled={(expanded, row) => {
+                    //   // VisualizeDocument(expanded, row);
+                    // }}
                     dense
                   />
                 )}
