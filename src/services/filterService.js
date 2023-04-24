@@ -82,6 +82,10 @@ export const filterByTabs = (
   finishDate,
   typeDate
 ) => {
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
   if (tab === "usuario") {
     return filterByUser(data, filterText);
   }
