@@ -27,7 +27,7 @@ function Dashboard({ boughtFirms, usedFirms }) {
         }}
       >
         <GeneralCard title="Firmas compradas" value={boughtFirms} />
-        <GeneralCard title="Firmas usadas" value={usedFirms} />
+        <GeneralCard title="Firmas Restantes" value={usedFirms} />
       </div>
       <div>
         <ChartsContainer

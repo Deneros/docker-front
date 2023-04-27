@@ -22,7 +22,7 @@ function ChartsContainer({ topSenders, monthlyCounts, topSignedSenders }) {
       <div style={{ display: "flex", justifyContent: "space-around" }}>
         <StyledCard>
           <Card.Body>
-            <PieChart data={topSenders} title={'Documentos enviadas'} titleSlice={'info:'}/>
+            <PieChart data={topSenders} title={'Documentos enviados'} titleSlice={'info:'}/>
           </Card.Body>
         </StyledCard>
         <StyledCard>
