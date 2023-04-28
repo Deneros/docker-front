@@ -1,5 +1,5 @@
 import React from "react";
-import InputFilter from "../Input/InputFilter";
+import GeneralInput from "../Input/GeneralInput";
 
 const UserFilter = ({ filterText, setFilterText }) => {
   const handleClear = () => {
@@ -13,10 +13,12 @@ const UserFilter = ({ filterText, setFilterText }) => {
   };
 
   return (
-    <InputFilter
-      onFilter={(value) => handleFilterText(value)}
+    <GeneralInput
+      id="filter"
+      label="Buscar"
+      type="text"
+      onChange={handleFilterText}
       onClear={handleClear}
-      filterText={filterText}
     />
   );
 };
