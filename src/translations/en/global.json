@@ -1,0 +1,14 @@
+{
+    "navbar" : {
+        "home":"Home",
+        "documents":"Documents",
+        "templates":"Templates",
+        "reports":"Reports"
+    },
+    "reports": {
+        "users": "Users",
+        "documents": "Documents",
+        "transactions": "Transactions",
+        "consumption": "Consumption"
+    }
+}
