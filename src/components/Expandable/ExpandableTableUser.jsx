@@ -40,6 +40,7 @@ function ExpandableTableUser({ data }) {
         <GeneralCard
           title="Completed Documents"
           value={loading ? <Loading /> : userData.completed_documents}
+          // onPress={(e)=>{console.log('hola')}}
         />
       </Grid>
       <Grid xs={12} sm={6} md={3}>

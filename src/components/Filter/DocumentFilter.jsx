@@ -1,7 +1,6 @@
 import React from "react";
-import InputFilter from "../Input/InputFilter";
 import Select from "../Select/Select";
-import DatePicker from "../Input/DatePicker";
+import GeneralInput from "../Input/GeneralInput";
 
 const DocumentFilter = ({
   filterText,
@@ -42,12 +41,26 @@ const DocumentFilter = ({
   return (
     <>
       <Select onSelect={handleDateType} />
-      <DatePicker id="start" label="Fecha Inicio" onDate={handleDatePickerStart} />
-      <DatePicker id="finish" label="Fecha Final" onDate={handleDatePickerFinish} />
-      <InputFilter
-        onFilter={(value) => handleFilterText(value)}
+      <GeneralInput
+        id="start-date"
+        label="Fecha de inicio"
+        type="date"
+        onChange={handleDatePickerStart}
         onClear={handleClear}
-        filterText={filterText}
+      />
+      <GeneralInput
+        id="finish-date"
+        label="Fecha Final"
+        type="date"
+        onChange={handleDatePickerFinish}
+        onClear={handleClear}
+      />
+      <GeneralInput
+        id="filter"
+        label="Buscar"
+        type="text"
+        onChange={handleFilterText}
+        onClear={handleClear}
       />
     </>
   );
