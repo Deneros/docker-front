@@ -1,9 +1,12 @@
 import React from "react";
-import { Dropdown, Text } from "@nextui-org/react";
+import { Dropdown, Text, Switch  } from "@nextui-org/react";
 import "./Navbar.css";
 import logo from "../../../assets/images/logo.png";
+import { useTranslation } from "react-i18next";
 
 function Navbar() {
+  const [t, i18n] = useTranslation("global");
+
   const MenuList = () => {
     return (
       <Dropdown>
@@ -37,21 +40,24 @@ function Navbar() {
       <div>
         <ul id="menu-listado" class="nav">
           <li>
-            <a href="#">Home</a>
+            <a href="#">{t("navbar.home")}</a>
           </li>
           <li>
-            <a href="#">Documents</a>
+            <a href="#">{t("navbar.documents")}</a>
           </li>
           <li>
-            <a href="#">Template</a>
+            <a href="#">{t("navbar.templates")}</a>
           </li>
           <li>
-            <a href="#">Reports</a>
+            <a href="#">{t("navbar.reports")}</a>
           </li>
         </ul>
       </div>
       <div>
         <MenuList />
+      </div>
+      <div>
+        <Switch onChange={(e)=>{e.target.checked ? i18n.changeLanguage("en"):i18n.changeLanguage("es")}}/>
       </div>
     </div>
   );
