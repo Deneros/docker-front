@@ -1,3 +1,5 @@
+import { TABS } from "../utils/constants";
+
 export const filterByUser = (data, filterText) => {
   return data.filter((item) => {
     const textFilter =
@@ -86,19 +88,19 @@ export const filterByTabs = (
     return [];
   }
 
-  if (tab === "usuario") {
+  if (tab === TABS.USER) {
     return filterByUser(data, filterText);
   }
 
-  if (tab === "documento") {
+  if (tab === TABS.DOCUMENT) {
     return filterByDocument(data, startDate, finishDate, filterText, typeDate);
   }
 
-  if (tab === "consumo") {
+  if (tab === TABS.CONSUMPTION) {
     return filterByConsumption(data, filterText);
   }
 
-  if (tab === "transacciones") {
+  if (tab === TABS.TRANSACTION) {
     return filterByTransactions(data, filterText);
   }
 };
