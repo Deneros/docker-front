@@ -1,15 +1,15 @@
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 
-export const URL =
+export const URL =   
   process.env.NODE_ENV === "production"
     ? `${process.env.BASE_URL}/api/`
     : "http://localhost:8080/api/";
 
 export const tableUrl = {
-  user: URL+"user",
-  document: URL+"document",
-  consumption: URL+"product",
-  transactions: URL+"transactions",
+  user: URL + "user",
+  document: URL + "document",
+  consumption: URL + "product",
+  transactions: URL + "transactions",
 };
 
 export const columns = {
@@ -122,6 +122,53 @@ export const columns = {
     {
       name: "Tipo transaccion",
       selector: (row) => row.TransactionTypeName,
+      sortable: true,
+    },
+  ],
+};
+
+export const columnsModal = {
+  completed: [
+    {
+      name: "Nombre",
+      selector: (row) => row.document_name,
+      sortable: true,
+    },
+    {
+      name: "Estado",
+      selector: (row) => row.state,
+      sortable: true,
+    },
+    {
+      name: "Fecha Firma",
+      selector: (row) => row.sign_date + " " + row.sign_hour,
+      sortable: true,
+    },
+    {
+      name: "Destinatarios",
+      selector: (row) => row.destinataries,
+      sortable: true,
+    },
+  ],
+  pending: [
+    {
+      name: "Nombre",
+      selector: (row) => row.document_name,
+      sortable: true,
+    },
+    {
+      name: "Estado",
+      selector: (row) => row.state,
+      sortable: true,
+    },
+    {
+      name: "Fecha Envio",
+      selector: (row) => row.send_date + " " + row.send_hour,
+      sortable: true,
+    },
+    {
+      name: "Destinatarios",
+      selector: (row) => row.destinataries,
       sortable: true,
     },
   ],
