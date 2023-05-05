@@ -1,27 +1,23 @@
-import { useEffect } from "react"
 import { useFetch } from "../../hooks/useFetch";
 import { URL, columnsModal } from "../../utils/constants";
-import DataTable from "react-data-table-component";
+import Table from '../Table/Table'
 import { Loading } from "@nextui-org/react";
 
 
-function ModalContent({ userId, state }) {
-  const { data: userDocuments, loading } = useFetch(
+function ModalContentDocumentUser({ userId, state }) {
+  const { data, loading } = useFetch(
     `${URL}user/${userId}/documents/${state}`
   );
 
-  // useEffect(() => {
-  //   console.log(userDocuments);
-  // }, [userDocuments]);
 
   return (
     <div style={{overflowY:"auto"}}>
       {loading ? (
         <Loading />
       ) : (
-        <DataTable
+        <Table
           columns={columnsModal[state]}
-          data={userDocuments}
+          data={data}
           expandableRows={false}
         />
       )}
@@ -29,4 +25,4 @@ function ModalContent({ userId, state }) {
   );
 }
 
-export default ModalContent;
+export default ModalContentDocumentUser;
