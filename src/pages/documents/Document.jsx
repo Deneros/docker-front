@@ -3,7 +3,10 @@ import DocumentFilter from "../../components/Filter/DocumentFilter";
 import UserFilter from "../../components/Filter/UserFilter";
 import Navbar from "../../components/layout/Navbar/Navbar";
 import Table from "../../components/Table/Table";
-import Dashboard from "../../components/Dashboard/Dashboard";
+import Graphics from "../../components/Graphics/Graphics";
+import ExpandableTableUser from "../../components/Expandable/ExpandableTableUser";
+import ExpandableTableDocument from "../../components/Expandable/ExpandableTableDocument";
+import Consumption from "../../components/Consumption/Consumption";
 import { filterByTabs } from "../../services/filterService";
 import { useFetch } from "../../hooks/useFetch";
 import { useActiveTab } from "../../hooks/useActiveTab";
@@ -33,6 +36,53 @@ function Document() {
   const { activeTab, getTabClassName, setActive } = useActiveTab(TABS.USER);
   const { data, loading } = useFetch(tableUrl[activeTab]);
   const [t] = useTranslation("global");
+
+  const getColumnsForTab = (activeTab) => {
+    return columns[activeTab];
+  };
+
+  const getDataForTab = (activeTab) => {
+    return filterByTabs(
+      activeTab,
+      data,
+      filterText,
+      startDate,
+      finishDate,
+      typeDate
+    );
+  };
+
+  const getExpandableComponent = (activeTab) => {
+    if (activeTab === "document") return ExpandableTableDocument;
+    if (activeTab === "user") return ExpandableTableUser;
+    return null;
+  };
+
+  function renderComponentByTab(activeTab) {
+    switch (activeTab) {
+      case TABS.CONSUMPTION:
+        return (
+          <Consumption
+            boughtFirms={data.bought_firms}
+            usedFirms={data.used_firms}
+            totalDocuments={data.total_documents}
+          />
+        );
+      case TABS.REPORTS:
+        return (
+          <Graphics/>
+        );
+      default:
+        return (
+          <Table
+            columns={getColumnsForTab(activeTab)}
+            data={getDataForTab(activeTab)}
+            subHeaderComponent={subHeaderComponentMemo}
+            expandableComponent={getExpandableComponent(activeTab)}
+          />
+        );
+    }
+  }
 
   const subHeaderComponentMemo = React.useMemo(() => {
     if (activeTab === "document") {
@@ -90,33 +140,16 @@ function Document() {
               >
                 <p>{t("reports.consumption")}</p>
               </StyledLi>
+              <StyledLi
+                className={getTabClassName(TABS.REPORTS)}
+                onClick={() => setActive(TABS.REPORTS)}
+              >
+                <p>{t("reports.reports")}</p>
+              </StyledLi>
             </StyledUl>
           </StyledCointanerList>
           <StyledContainerTable>
-            {!loading && data && (
-              <>
-                {activeTab === TABS.CONSUMPTION ? (
-                  <Dashboard
-                    boughtFirms={data.bought_firms}
-                    usedFirms={data.used_firms}
-                  />
-                ) : (
-                  <Table
-                    activeTab={activeTab}
-                    columns={columns}
-                    data={filterByTabs(
-                      activeTab,
-                      data,
-                      filterText,
-                      startDate,
-                      finishDate,
-                      typeDate
-                    )}
-                    subHeaderComponent={subHeaderComponentMemo}
-                  />
-                )}
-              </>
-            )}
+            {!loading && data && <>{renderComponentByTab(activeTab)}</>}
           </StyledContainerTable>
         </StyledContainerGroupTable>
       </StyledContainer>
