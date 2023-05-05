@@ -174,9 +174,23 @@ export const columnsModal = {
   ],
 };
 
+export const columnsModalUserDocument = [
+    {
+      name: "Nombre",
+      selector: (row) => row.user_name,
+      sortable: true,
+    },
+    {
+      name: "Cantidad",
+      selector: (row) => row.signed_documents_count,
+      sortable: true,
+    }
+  ];
+
 export const TABS = {
   USER: "user",
   DOCUMENT: "document",
   CONSUMPTION: "consumption",
   TRANSACTION: "transactions",
+  REPORTS: "reports"
 };
