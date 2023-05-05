@@ -9,6 +9,7 @@
         "users": "Users",
         "documents": "Documents",
         "transactions": "Transactions",
-        "consumption": "Consumption"
+        "consumption": "Consumption",
+        "reports": "Reports"
     }
 }
