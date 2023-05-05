@@ -4,7 +4,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { URL } from "../../utils/constants";
 import GeneralCard from "../Cards/GeneralCard";
 import GeneralModal from "../Modal/GeneralModal";
-import ModalContent from "../ModalContent/ModalContent";
+import ModalContentDocumentUser from "../ModalContent/ModalContentDocumentUser";
 
 function ExpandableTableUser({ data }) {
   const states = { completed: "Completados", pending: "Pendientes" };
@@ -64,7 +64,7 @@ function ExpandableTableUser({ data }) {
       </Grid.Container>
       <GeneralModal
         title={"Documentos " + states[state]}
-        component={<ModalContent userId={data.usu_id} state={state} />}
+        component={<ModalContentDocumentUser userId={data.usu_id} state={state} />}
         visible={showModal}
         onClose={closeModal}
       />
