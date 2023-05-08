@@ -1,6 +1,6 @@
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 
-export const URL =   
+export const URL =
   process.env.NODE_ENV === "production"
     ? `${process.env.BASE_URL}/api/`
     : "http://localhost:8080/api/";
@@ -174,18 +174,27 @@ export const columnsModal = {
   ],
 };
 
+
 export const columnsModalUserDocument = [
-    {
-      name: "Nombre",
-      selector: (row) => row.user_name,
-      sortable: true,
-    },
-    {
-      name: "Cantidad",
-      selector: (row) => row.signed_documents_count,
-      sortable: true,
-    }
-  ];
+  {
+    name: "Nombre",
+    selector: (row) => row.user_name,
+    sortable: true,
+  },
+  {
+    name: "Cantidad",
+    selector: (row) => row.signed_documents_count,
+    sortable: true,
+  },
+  {
+    name: "Documentos",
+    cell: () => (
+      <h2 style={{ color: "#FF0000", cursor: "pointer" }} title="Mostrar Documentos">
+        <BsFillFileEarmarkPdfFill />
+      </h2>
+    ),
+  },
+];
 
 export const TABS = {
   USER: "user",
@@ -194,3 +203,13 @@ export const TABS = {
   TRANSACTION: "transactions",
   REPORTS: "reports"
 };
+
+
+// {
+//   name: "Certificado",
+//   cell: () => (
+//     <h2 style={{ color: "#FF0000", cursor: "pointer" }} title="Descargar">
+//       <BsFillFileEarmarkPdfFill />
+//     </h2>
+//   ),
+// },
