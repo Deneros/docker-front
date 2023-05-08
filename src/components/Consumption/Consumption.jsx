@@ -1,27 +1,14 @@
 import { useState, useEffect } from "react";
 import GeneralCard from "../Cards/GeneralCard";
 import { useFetch } from "../../hooks/useFetch";
-import GeneralModal from "../Modal/GeneralModal";
 import { Loading } from "@nextui-org/react";
-import ModalContentUserDocument from "../ModalContent/ModalContentUserDocument";
-import { URL } from "../../utils/constants";
+import Table from "../Table/Table";
+import TableFooter from "../TableFooter/TableFooter";
+import ExpandableTableConsumption from "../Expandable/ExpandableTableConsumption";
+import { URL, columnsModalUserDocument } from "../../utils/constants";
 
 function Consumption({ boughtFirms, usedFirms, totalDocuments }) {
-  const [showModal, setShowModal] = useState(false);
   const { data, loading } = useFetch(`${URL}user/details`);
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const handleClickCard = () => {
-    setShowModal(true);
-  };
-
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <>
@@ -42,18 +29,16 @@ function Consumption({ boughtFirms, usedFirms, totalDocuments }) {
         <GeneralCard
           title="Documentos Finalizados"
           value={totalDocuments}
-          pressable={true}
-          onPress={handleClickCard}
         />
       </div>
-      <GeneralModal
-        title="Cantidad de documentos firmados por usuarios"
-        component={loading ? <Loading /> : <ModalContentUserDocument  data={data} />}
-        visible={showModal}
-        onClose={closeModal}
-      />
-      {/* <GeneralCard title="Firmas compradas" value={boughtFirms} />
-        <GeneralCard title="Firmas Restantes" value={usedFirms} /> */}
+      <div style={{ margin: "0.5rem" }}>
+
+        {loading ? (
+          <Loading />
+        ) : (
+          data && <Table columns={columnsModalUserDocument} data={data} expandableRows={true} expandableComponent={ExpandableTableConsumption}/>
+        )}
+      </div>
     </>
   );
 }
