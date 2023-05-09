@@ -9,7 +9,7 @@ const Table = ({ columns, data, subHeaderComponent, expandableComponent, dense=t
       pagination
       expandableRows={!!expandableComponent}
       expandableRowsComponent={expandableComponent}
-      subHeader
+      subHeader={!!subHeaderComponent}
       subHeaderWrap={true}
       subHeaderComponent={subHeaderComponent}
       dense={dense}
