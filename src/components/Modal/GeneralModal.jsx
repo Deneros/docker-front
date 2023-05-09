@@ -1,11 +1,11 @@
 import { Modal, Text, Button } from "@nextui-org/react";
 
-function GeneralModal({ title, component, visible, onClose }) {
+function GeneralModal({ title, size, component, visible, onClose }) {
   return (
     <Modal
       scroll={true}
       open={visible}
-      width="900px"
+      width={size}
       closeButton
       aria-labelledby="modal-title"
       aria-describedby="modal-description"

@@ -64,6 +64,7 @@ function ExpandableTableUser({ data }) {
       </Grid.Container>
       <GeneralModal
         title={"Documentos " + states[state]}
+        size={'900px'}
         component={<ModalContentDocumentUser userId={data.usu_id} state={state} />}
         visible={showModal}
         onClose={closeModal}
