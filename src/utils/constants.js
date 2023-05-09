@@ -175,7 +175,7 @@ export const columnsModal = {
 };
 
 
-export const columnsModalUserDocument = [
+export const ConcumptionColumnsFunction = (callback) => [
   {
     name: "Nombre",
     selector: (row) => row.user_name,
@@ -188,8 +188,12 @@ export const columnsModalUserDocument = [
   },
   {
     name: "Documentos",
-    cell: () => (
-      <h2 style={{ color: "#FF0000", cursor: "pointer" }} title="Mostrar Documentos">
+    cell: (row) => (
+      <h2
+        style={{ color: "#FF0000", cursor: "pointer" }}
+        title="Mostrar Documentos"
+        onClick={()=>callback(row)}
+      >
         <BsFillFileEarmarkPdfFill />
       </h2>
     ),

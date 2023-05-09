@@ -1,14 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import GeneralCard from "../Cards/GeneralCard";
 import { useFetch } from "../../hooks/useFetch";
 import { Loading } from "@nextui-org/react";
 import Table from "../Table/Table";
-import TableFooter from "../TableFooter/TableFooter";
 import ExpandableTableConsumption from "../Expandable/ExpandableTableConsumption";
-import { URL, columnsModalUserDocument } from "../../utils/constants";
+import { URL, ConcumptionColumnsFunction } from "../../utils/constants";
+import GeneralModal from "../Modal/GeneralModal";
 
 function Consumption({ boughtFirms, usedFirms, totalDocuments }) {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
   const { data, loading } = useFetch(`${URL}user/details`);
+
+  const handleClickDocument = (row) => {
+    setSelectedRow(row);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const columns = ConcumptionColumnsFunction(handleClickDocument);
 
   return (
     <>
@@ -36,8 +49,20 @@ function Consumption({ boughtFirms, usedFirms, totalDocuments }) {
         {loading ? (
           <Loading />
         ) : (
-          data && <Table columns={columnsModalUserDocument} data={data} expandableRows={true} expandableComponent={ExpandableTableConsumption}/>
+          data && <Table columns={columns} data={data} expandableRows={true} />
         )}
+
+        <GeneralModal
+          title={"Documentos de usuario"}
+          size={'900px'}
+          component={
+            <div style={{ overflowY: 'auto' }}>
+              <ExpandableTableConsumption data={selectedRow} />
+            </div>}
+          visible={showModal}
+          onClose={closeModal}
+        />
+
       </div>
     </>
   );
