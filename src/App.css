@@ -37,6 +37,17 @@
   }
 } */
 
+@font-face {
+  font-family: 'Poppins-Light';
+  src: url('./assets/fonts/Poppins/Poppins-Light.ttf');
+}
+
+:root {
+  --expandable-table-background: #DDE7EE;
+  --primary-color: #006CD8;
+  --main-font: 'Poppins-Light';
+}
+
 .App {
   height: 100%;
   width: 100%;
