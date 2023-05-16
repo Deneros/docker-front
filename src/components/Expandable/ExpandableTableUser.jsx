@@ -5,6 +5,11 @@ import { URL } from "../../utils/constants";
 import GeneralCard from "../Cards/GeneralCard";
 import GeneralModal from "../Modal/GeneralModal";
 import ModalContentDocumentUser from "../ModalContent/ModalContentDocumentUser";
+import logo from "../../assets/images/perfil.png";
+import total from "../../assets/images/total-documentos.png";
+import completados from "../../assets/images/documentos-completado.png";
+import pendientes from "../../assets/images/documentos-pendientes.png";
+import "./ExpandableTableUser.css";
 
 function ExpandableTableUser({ data }) {
   const states = { completed: "Completados", pending: "Pendientes" };
@@ -32,35 +37,24 @@ function ExpandableTableUser({ data }) {
 
   return (
     <>
-      <Grid.Container gap={2} justify="center" alignItems="center">
-        <Grid xs={12} sm={6} md={3}>
-          <GeneralCard
-            title="Name"
-            value={`${data.usu_nombre} ${data.usu_apelli}`}
-          />
-        </Grid>
-        <Grid xs={12} sm={6} md={3}>
-          <GeneralCard
-            title="Total Documents"
-            value={loading ? <Loading /> : userData.total_documents}
-          />
-        </Grid>
-        <Grid xs={12} sm={6} md={3}>
-          <GeneralCard
-            title="Completed Documents"
-            value={loading ? <Loading /> : userData.completed_documents}
-            pressable={true}
-            onPress={handleClickCardCompleted}
-          />
-        </Grid>
-        <Grid xs={12} sm={6} md={3}>
-          <GeneralCard
-            title="Pending Documents"
-            value={loading ? <Loading /> : userData.pending_documents}
-            pressable={true}
-            onPress={handleClickCardPending}
-          />
-        </Grid>
+      <Grid.Container className="grid-container">
+        <div>
+          <img className="icono" src={logo} />
+        </div>
+
+        <div className="user-data">
+          <p>Resumen</p>
+          <p>Nombre: {`${data.usu_nombre} ${data.usu_apelli}`}</p>
+          <p>Plan Actual: 2000 firmas</p>
+        </div>
+
+        <hr className="separator" />
+        
+        <div className="user-signature">
+          <p><img src={total} /> Total de documentos: <span>{loading ? <Loading /> : userData.total_documents}</span></p>
+          <p><img src={completados} /> Documentos completados: <span>{loading ? <Loading /> : userData.completed_documents}</span></p>
+          <p><img src={pendientes} /> Documentos pendientes: <span>{loading ? <Loading /> : userData.pending_documents}</span></p>
+        </div>
       </Grid.Container>
       <GeneralModal
         title={"Documentos " + states[state]}

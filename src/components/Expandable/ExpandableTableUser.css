@@ -1,0 +1,50 @@
+
+/* Contenedor expandible */
+.grid-container {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    padding: 40px;
+    background-color: var(--expandable-table-background);
+    font-family: var(--main-font);
+}
+
+/* Icono del usuario */
+.icono {
+    width: 100px;
+    height: 100px;
+}
+
+/* Datos de usuario */
+.user-data p:nth-child(1) {
+    font-size: 2rem;
+    font-weight: normal;
+}
+
+.user-signature p, .user-data p {
+    font-weight: bold;
+}
+
+.user-signature p {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.user-signature {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-signature span {
+    color: var(--primary-color);
+}
+
+/* Separador */
+.separator {
+    height: 110px;
+    width: 1px;
+    border: none;
+    background-color: var(--primary-color);
+}
