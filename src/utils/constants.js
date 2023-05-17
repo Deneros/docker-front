@@ -70,15 +70,7 @@ export const columns = {
         row.sign_date && row.sign_hour
           ? row.sign_date + " " + row.sign_hour
           : "- -",
-    },
-    {
-      name: "Acciones",
-      cell: () => (
-        <h2 style={{ color: "#FF0000", cursor: "pointer" }} title="Descargar">
-          <BsFillFileEarmarkPdfFill />
-        </h2>
-      ),
-    },
+    }
   ],
   consumption: [
     {
