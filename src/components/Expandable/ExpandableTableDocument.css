@@ -1,0 +1,56 @@
+
+/* Contenedor del expandible */
+.document-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+    padding: 10px 0px;
+    background-color: var(--expandable-table-background);
+    font-family: var(--main-font);
+    font-weight: bold;
+}
+
+/* Datos */
+.data {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 305px;
+}
+
+.data > p:nth-child(1) {
+    font-size: 2rem;
+    font-weight: normal;
+}
+
+.data div p:nth-child(1) {
+    font-family: var(--main-font-bold);
+}
+
+/* Campo de firmantes */
+.signatories {
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+/* Boton */
+.data button {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+    font-family: var(--main-font);
+    background-color: var(--primary-color);
+}
+
+/* Contenedor del documento */
+.object-container, object {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    width: 600px;
+}
