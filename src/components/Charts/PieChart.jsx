@@ -11,6 +11,7 @@ function PieChart({ data, title, titleSlice }) {
     name: item.sender.name,
     value: item.send_count,
   }));
+  const colors = ["#73C0DE", "#EE6666", "#FAC858", "#91CC75", "#5470C6"];
 
   const option = {
     title: {
@@ -18,19 +19,20 @@ function PieChart({ data, title, titleSlice }) {
       left: "center",
     },
     tooltip: {
-      trigger: "item",
-      formatter: "{a} <br/>{b}: {c} ({d}%)",
+      show: "item",
+      /* formatter: "{a} <br/>{b}: {c} ({d}%)", */
     },
     legend: {
       orient: "vertical",
-      left: "left",
+      right: "right",
+      top: 'center',
       data: chartData.map((item) => item.name),
     },
     series: [
       {
+        center: ['40%', '50%'],
         name: titleSlice,
         type: "pie",
-
         data: chartData,
         itemStyle: {
           emphasis: {
@@ -38,13 +40,19 @@ function PieChart({ data, title, titleSlice }) {
             shadowOffsetX: 0,
             shadowColor: "rgba(0, 0, 0, 0.5)",
           },
+          itemStyle: {
+            color: (params) => colors[params.dataIndex]
+          }
         },
+        label: {
+          show: false
+        }
       },
     ],
   };
 
   return (
-    <ReactECharts option={option} style={{ width: "100%", height: "400px" }} />
+    <ReactECharts option={option} style={{ width: "100%", height: "250px" }} />
   );
 }
 

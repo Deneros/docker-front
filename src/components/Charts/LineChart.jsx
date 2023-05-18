@@ -1,10 +1,6 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts/core';
-import { LineChart } from 'echarts/charts';
-
-
-// echarts.use([GridComponent, LineChart, CanvasRenderer, UniversalTransition]);
 
 function CustomLineChart({ monthlyCounts }) {
   if (!monthlyCounts) {
