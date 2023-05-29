@@ -3,9 +3,9 @@ import GeneralCard from "../Cards/GeneralCard";
 import { useFetch } from "../../hooks/useFetch";
 import { Loading } from "@nextui-org/react";
 import Table from "../Table/Table";
-import ExpandableTableConsumption from "../Expandable/ExpandableTableConsumption";
 import { URL, ConcumptionColumnsFunction } from "../../utils/constants";
 import GeneralModal from "../Modal/GeneralModal";
+import ModalContentConsumption from "../ModalContent/ModalContentConsumption";
 
 function Consumption({ boughtFirms, usedFirms, totalDocuments }) {
   const [showModal, setShowModal] = useState(false);
@@ -57,7 +57,7 @@ function Consumption({ boughtFirms, usedFirms, totalDocuments }) {
           size={'900px'}
           component={
             <div style={{ overflowY: 'auto' }}>
-              <ExpandableTableConsumption data={selectedRow} />
+              <ModalContentConsumption data={selectedRow} />
             </div>}
           visible={showModal}
           onClose={closeModal}

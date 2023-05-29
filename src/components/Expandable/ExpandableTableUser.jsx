@@ -52,8 +52,8 @@ function ExpandableTableUser({ data }) {
         
         <div className="user-signature">
           <p><img src={total} /> Total de documentos: <span>{loading ? <Loading /> : userData.total_documents}</span></p>
-          <p><img src={completados} /> Documentos completados: <span>{loading ? <Loading /> : userData.completed_documents}</span></p>
-          <p><img src={pendientes} /> Documentos pendientes: <span>{loading ? <Loading /> : userData.pending_documents}</span></p>
+          <p onClick={handleClickCardCompleted}><img src={completados} /> Documentos completados: <span>{loading ? <Loading /> : userData.completed_documents}</span></p>
+          <p onClick={handleClickCardPending}><img src={pendientes} /> Documentos pendientes: <span>{loading ? <Loading /> : userData.pending_documents}</span></p>
         </div>
       </Grid.Container>
       <GeneralModal

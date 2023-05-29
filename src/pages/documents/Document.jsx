@@ -37,6 +37,7 @@ function Document() {
   const { data, loading } = useFetch(tableUrl[activeTab]);
   const [t] = useTranslation("global");
 
+
   const getColumnsForTab = (activeTab) => {
     return columns[activeTab];
   };

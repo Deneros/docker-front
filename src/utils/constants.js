@@ -1,4 +1,5 @@
 import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
+import { AiOutlineUnorderedList } from "react-icons/ai";
 
 export const URL =
   process.env.NODE_ENV === "production"
@@ -182,11 +183,11 @@ export const ConcumptionColumnsFunction = (callback) => [
     name: "Documentos",
     cell: (row) => (
       <h2
-        style={{ color: "#FF0000", cursor: "pointer" }}
+        style={{ color: "#00000", cursor: "pointer" }}
         title="Mostrar Documentos"
         onClick={()=>callback(row)}
       >
-        <BsFillFileEarmarkPdfFill />
+        <AiOutlineUnorderedList />
       </h2>
     ),
   },
