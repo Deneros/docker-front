@@ -11,8 +11,6 @@ function ExpandableTableDocument({ data }) {
   const sender = data.sender;
   const destinataries = data.destinataries;
 
-  console.log(data);
-
   const { data: documentData, loading } = useFetch(URL + `sended/document/${id_doc}`);
 
   sender.map(user => name = user.name);
@@ -77,8 +75,8 @@ function ExpandableTableDocument({ data }) {
           <p>Firmantes</p>
           <p className="signatories">{signatories}</p>
         </div>
-        <button type="button" onClick={handleDownloadDocument(data)}>Descargar documento</button>
-        <button type="button" onClick={handleDownloadCertificate}>Descargar certificado de firma</button>
+        <button type="button" onClick={() => handleDownloadDocument(data)}>Descargar documento</button>
+        <button type="button" onClick={() => handleDownloadCertificate}>Descargar certificado de firma</button>
       </div>
       <div className="object-container">
         {loading ? (
