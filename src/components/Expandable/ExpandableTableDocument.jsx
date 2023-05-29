@@ -51,11 +51,18 @@ function ExpandableTableDocument({ data }) {
   const handleDownloadCertificate = async () => {
     try {
       const response = await fetch(URL + `sended/document/${id_doc}/certificate`);
-      const data = await response.blob();
-      const url = window.URL.createObjectURL(data);
+      const data = await response.json();
+      const binaryString = window.atob(data.document);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `Firmacertificado-${id_doc}.pdf`);
+      link.setAttribute('download', 'Firmacertificado-'+id_doc);
       document.body.appendChild(link);
       link.click();
     } catch (error) {
@@ -76,7 +83,7 @@ function ExpandableTableDocument({ data }) {
           <p className="signatories">{signatories}</p>
         </div>
         <button type="button" onClick={() => handleDownloadDocument(data)}>Descargar documento</button>
-        <button type="button" onClick={() => handleDownloadCertificate}>Descargar certificado de firma</button>
+        <button type="button" onClick={handleDownloadCertificate}>Descargar certificado de firma</button>
       </div>
       <div className="object-container">
         {loading ? (
