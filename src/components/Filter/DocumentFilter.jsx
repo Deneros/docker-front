@@ -41,20 +41,24 @@ const DocumentFilter = ({
   return (
     <>
       <Select onSelect={handleDateType} />
-      <GeneralInput
-        id="start-date"
-        label="Fecha de inicio"
-        type="date"
-        onChange={handleDatePickerStart}
-        onClear={handleClear}
-      />
-      <GeneralInput
-        id="finish-date"
-        label="Fecha Final"
-        type="date"
-        onChange={handleDatePickerFinish}
-        onClear={handleClear}
-      />
+      <div style={{paddingRight: "10px"}}>
+        <p style={{textAlign: "center"}}>Fecha de inicio</p>
+        <GeneralInput
+          id="start-date"
+          type="date"
+          onChange={handleDatePickerStart}
+          onClear={handleClear}
+        />
+      </div>
+      <div style={{paddingRight: "10px"}}>
+        <p style={{textAlign: "center"}}>Fecha Final</p>
+        <GeneralInput
+          id="finish-date"
+          type="date"
+          onChange={handleDatePickerFinish}
+          onClear={handleClear}
+        />
+      </div>
       <GeneralInput
         id="filter"
         label="Buscar"
