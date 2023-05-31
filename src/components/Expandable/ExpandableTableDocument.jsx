@@ -13,11 +13,10 @@ function ExpandableTableDocument({ data }) {
 
   const { data: documentData, loading } = useFetch(URL + `sended/document/${id_doc}`);
 
-  sender.map(user => name = user.name);
-
-  destinataries.forEach(user => {
-    signatories.push(user.name);
-  });
+  if(sender != undefined) {
+    sender.map(user => name = user.name);
+    destinataries.forEach(user => signatories.push(user.name));
+  }
 
   if (signatories.includes(name)) {
     name = "N/A";
