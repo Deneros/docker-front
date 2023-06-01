@@ -1,11 +1,21 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import { Dropdown, Text, Switch  } from "@nextui-org/react";
 import "./Navbar.css";
 import logo from "../../../assets/images/logo.png";
 import { useTranslation } from "react-i18next";
+import { useLocation } from 'react-router-dom';
 
 function Navbar() {
   const [t, i18n] = useTranslation("global");
+  const [user, setUser] =  useState("Guest")
+  const location = useLocation();
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const userParam = query.get('user')?? 'Admin';
+    setUser(userParam);
+
+  }, [location])
 
   const MenuList = () => {
     return (
@@ -17,7 +27,7 @@ function Navbar() {
               fontFamily: "Poppins-ExtraLight",
             }}
           >
-            Nicolas Velez
+            {user}
           </Text>
         </Dropdown.Button>
         <Dropdown.Menu aria-label="Static Actions">
@@ -40,19 +50,20 @@ function Navbar() {
       <div>
         <ul id="menu-listado" class="nav">
           <li>
-            <a href="#">{t("navbar.home")}</a>
+            <a href={process.env.REACT_APP_NAVBAR_URL_HOME}>{t("navbar.home")}</a>
           </li>
           <li>
-            <a href="#">{t("navbar.documents")}</a>
+            <a href={process.env.REACT_APP_NAVBAR_URL_DOCUMENT}>{t("navbar.documents")}</a>
           </li>
           <li>
-            <a href="#">{t("navbar.templates")}</a>
+            <a href={process.env.REACT_APP_NAVBAR_URL_TEMPLATE}>{t("navbar.templates")}</a>
           </li>
           <li>
-            <a href="#">{t("navbar.reports")}</a>
+            <a href={process.env.REACT_APP_NAVBAR_URL_REPORT}>{t("navbar.reports")}</a>
           </li>
         </ul>
       </div>
+
       <div>
         <MenuList />
       </div>
