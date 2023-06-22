@@ -4,7 +4,7 @@ import { AiOutlineUnorderedList } from "react-icons/ai";
 export const URL =
   process.env.NODE_ENV === "production"
     ? `${process.env.BASE_URL}/api/`
-    : "http://localhost:8080/api/";
+    : "http://localhost:8000/api/";
 
 export const tableUrl = {
   user: URL + "user",
@@ -185,6 +185,51 @@ export const ConcumptionColumnsFunction = (callback) => [
       <h2
         style={{ color: "#00000", cursor: "pointer" }}
         title="Mostrar Documentos"
+        onClick={()=>callback(row)}
+      >
+        <AiOutlineUnorderedList />
+      </h2>
+    ),
+  },
+];
+
+export const TransactionColumnsFunction = (callback) => [
+  {
+    name: "Record",
+    selector: (row) => row.Record,
+    sortable: true,
+  },
+  {
+    name: "Fecha registro",
+    selector: (row) => row.StartingDate,
+    sortable: true,
+  },
+  {
+    name: "Cédula",
+    selector: (row) => row.IdNumber,
+    sortable: true,
+  },
+  {
+    name: "Nombre",
+    selector: (row) => `${row.FirstName} ${row.SecondName} ${row.FirstSurname} ${row.SecondSurname}`,
+    sortable: true,
+  },
+  {
+    name: "Lugar de Nacimiento",
+    selector: (row) => row.PlaceBirth,
+    sortable: true,
+  },
+  {
+    name: "Tipo Transacción",
+    selector: (row) => row.TransactionTypeName,
+    sortable: true,
+  },
+  {
+    name: "Imágenes",
+    cell: (row) => (
+      <h2
+        style={{ color: "#00000", cursor: "pointer" }}
+        title="Mostrar Imágenes"
         onClick={()=>callback(row)}
       >
         <AiOutlineUnorderedList />

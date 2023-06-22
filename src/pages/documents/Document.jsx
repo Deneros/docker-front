@@ -7,6 +7,7 @@ import Graphics from "../../components/Graphics/Graphics";
 import ExpandableTableUser from "../../components/Expandable/ExpandableTableUser";
 import ExpandableTableDocument from "../../components/Expandable/ExpandableTableDocument";
 import Consumption from "../../components/Consumption/Consumption";
+import Transaction from "../../components/Transaction/Transaction";
 import { filterByTabs } from "../../services/filterService";
 import { useFetch } from "../../hooks/useFetch";
 import { useActiveTab } from "../../hooks/useActiveTab";
@@ -73,6 +74,12 @@ function Document() {
         return (
           <Graphics/>
         );
+      case TABS.TRANSACTION:
+        return (
+          <Transaction />
+        );
+
+
       default:
         return (
           <Table
